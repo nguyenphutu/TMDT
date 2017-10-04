@@ -1,0 +1,25 @@
+
+# Import Form elements such as TextField and BooleanField (optional)
+from wtforms import Form, BooleanField, StringField, PasswordField, validators, TextField
+
+# Import Form validators
+from wtforms.validators import Required, Email, EqualTo
+
+
+# Define the login form (WTForms)
+
+class LoginForm(Form):
+    email = StringField('Email Address', [validators.Length(min=6, max=35)])
+    password = PasswordField('Password', [validators.Length(min=6, max=50)])
+
+class RegistrationForm(Form):
+
+    first_name = StringField('First Name', [validators.Length(min=4, max=25)])
+    last_name = StringField('Last Name', [validators.Length(min=4, max=25)])
+    email = StringField('Email Address', [validators.Length(min=6, max=35)])
+    password = PasswordField('New Password', [
+        validators.DataRequired(),
+        EqualTo('confirm', message='Passwords must match')
+    ])
+    confirm = PasswordField('Repeat Password')
+    accept_tos = BooleanField('I accept the TOS', [validators.DataRequired()])

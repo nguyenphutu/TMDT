@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block head_meta %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Gretong Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+    Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+{% endblock %}
+
+<title>{% block title %}Demo{% endblock title %}</title>
+
+{% block shared_styles %}
+<link href="{{ url_for('static', filename = 'css/bootstrap.css') }}" rel='stylesheet' type='text/css' />
+<!-- jQuery (necessary JavaScript plugins) -->
+<script type='text/javascript' src="{{ url_for('static', filename = 'js/jquery-1.11.1.min.js') }}"></script>
+<script type='text/javascript' src="{{ url_for('static', filename = 'js/move-top.js') }}"></script>
+<script type='text/javascript' src="{{ url_for('static', filename = 'js/easing.js') }}"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+
+<!-- Custom Theme files -->
+<link href="{{ url_for('static', filename = 'css/style.css') }}" rel='stylesheet' type='text/css' />
+<link href="{{ url_for('static', filename = 'css/font-awesome.css') }}" rel='stylesheet' type='text/css' />
+
+<link href='//fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+<!--flexslider-->
+<link href="{{ url_for('static', filename = 'css/flexslider.css') }}" rel='stylesheet' type='text/css' />
+<script type='text/javascript' src="{{ url_for('static', filename = 'js/jquery.flexslider.js') }}"></script>
+
+{% endblock %}
+
+{% block styles %}
+    {# styles #}
+{% endblock styles %}
+
+{% block scripts %}
+    {# scripts #}
+{% endblock scripts %}
+
+</head>
+<body>
+{% include("parts/header.html") %}
+{% block products_breadcrumb %}
+{% endblock %}
+<!-- banner -->
+	<div class="banner">
+		<div class="w3l_banner_nav_left">
+			<nav class="navbar nav_bottom">
+			 <!-- Brand and toggle get grouped for better mobile display -->
+			  <div class="navbar-header nav_2">
+				  <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+			   </div>
+			   <!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+					<ul class="nav navbar-nav nav_1">
+						<li><a href="{{ url_for('products.products') }}">Branded Foods</a></li>
+						<li class="dropdown mega-dropdown active">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Veggies & Fruits<span class="caret"></span></a>
+							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+								<div class="w3ls_vegetables">
+									<ul>
+										<li><a href="{{ url_for('products.vegetables') }}">Vegetables</a></li>
+										<li><a href="{{ url_for('products.vegetables') }}">Fruits</a></li>
+									</ul>
+								</div>
+							</div>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Beverages<span class="caret"></span></a>
+							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+								<div class="w3ls_vegetables">
+									<ul>
+										<li><a href="{{ url_for('products.drink') }}">Soft Drinks</a></li>
+										<li><a href="{{ url_for('products.drink') }}">Juices</a></li>
+									</ul>
+								</div>
+							</div>
+						</li>
+						<li><a href="{{ url_for('products.pet') }}">Pet Food</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Frozen Foods<span class="caret"></span></a>
+							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+								<div class="w3ls_vegetables">
+									<ul>
+										<li><a href="{{ url_for('products.frozen') }}">Frozen Snacks</a></li>
+										<li><a href="{{ url_for('products.frozen') }}">Frozen Nonveg</a></li>
+									</ul>
+								</div>
+							</div>
+						</li>
+						<li><a href="{{ url_for('products.bread') }}">Bread & Bakery</a></li>
+					</ul>
+				 </div><!-- /.navbar-collapse -->
+			</nav>
+		</div>
+		{% block right_banner %}
+
+        {% endblock %}
+		<div class="clearfix"></div>
+	</div>
+<!-- banner -->
+{% block content %}
+
+{% endblock%}
+{% include("parts/footer.html") %}
+
+    <!-- Bootstrap Core JavaScript -->
+<script src="{{ url_for('static', filename = 'js/bootstrap.min.js') }}" ></script>
+
+<script>
+    $(document).ready(function(){
+        $(".dropdown").hover(
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+                $(this).toggleClass('open');
+            },
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+                $(this).toggleClass('open');
+            }
+        );
+    });
+</script>
+<!-- here stars scrolling icon -->
+<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear'
+				};
+			*/
+
+			$().UItoTop({ easingType: 'easeOutQuart' });
+
+			});
+</script>
+<!-- //here ends scrolling icon -->
+<script type='text/javascript' src="{{ url_for('static', filename = 'js/minicart.js') }}"></script>
+
+<script>
+    paypal.minicart.render();
+
+    paypal.minicart.cart.on('checkout', function (evt) {
+        var items = this.items(),
+            len = items.length,
+            total = 0,
+            i;
+
+        // Count the number of each item in the cart
+        for (i = 0; i < len; i++) {
+            total += items[i].get('quantity');
+        }
+
+        if (total < 3) {
+            alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');
+            evt.preventDefault();
+        }
+    });
+
+</script>
+</body>
+</html>
