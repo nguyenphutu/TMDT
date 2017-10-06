@@ -1,11 +1,11 @@
 Create a virtualenv::
 
   python3 -m venv env
-  env/bin/pip install -U pip setuptools
+  env/Scripts/pip install -U pip setuptools
 
 Install dependencies::
 
-  env/bin/pip install -r requirements.txt
+  env/Scripts/pip install -r requirements.txt
 
 Start a PostgreSQL or Mysql server::
 
