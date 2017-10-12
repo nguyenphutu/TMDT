@@ -22,9 +22,6 @@ def drink():
 def frozen():
     return render_template("frozen.html")
 
-@product.route('/payment')
-def payment():
-    return render_template("payment.html")
 
 @product.route('/pet')
 def pet():
@@ -38,3 +35,8 @@ def vegetables():
 @product.route('/single')
 def single():
     return render_template("single.html")
+
+
+@product.route('/payment')
+def payment():
+    return render_template("payment.html")

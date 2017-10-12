@@ -2766,11 +2766,7 @@ input.checkbox:checked:after {
   border-right: 5px solid rgba(0, 0, 0, 0.6);
 }
 .form-module .form {
-  display: none;
   padding: 40px;
-}
-.form-module .form:nth-child(2) {
-  display: block;
 }
 .form-module h2 {
     margin: 0 0 1.5em;
@@ -4817,4 +4813,9 @@ input.checkbox:checked:after {
 		background: url(../images/cart.png) no-repeat 105px 5px;
 		font-size: 13px;
 	}
+}
+
+.error-message{
+    color: red;
+    margin: 0 0 20px 0;
 }

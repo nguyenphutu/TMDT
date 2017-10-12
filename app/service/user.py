@@ -13,15 +13,16 @@ class UserService():
         user.status = status
         user.set_password(password)
 
+        message = ''
         try:
             self.db.session.add(user)
             self.db.session.commit()
         except Exception as e:
-            status = 'Email is already exists'
+            message = 'Email is already exists'
             self.db.session.rollback()
-        if status:
-            return status
-        return user
+        if message != '':
+            return {'masage': message}
+        return {'user': user}
 
     def update_user(self, user_id, first_name, last_name, email, role=None, status=None):
         user = User.query.filter_by(id=user_id).first()
@@ -62,6 +63,14 @@ class UserService():
             return user
         else:
             return None
+
+    def validate(self, email, password):
+        user = User.query.filter_by(email=email).first()
+        if user:
+            if user.check_password(password=password):
+                return 1
+        return 0
+
 
 class UserDetailService():
     def __init__(self, db):
