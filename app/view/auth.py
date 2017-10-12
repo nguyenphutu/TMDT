@@ -54,8 +54,8 @@ def login():
         if u_service.validate(email=email, password=password):
             user = u_service.find_by_email(email)
             user.authenticated = True
-            db.session.add(user)
             db.session.commit()
+            print(user.is_authenticated)
             login_user(user=user, remember=True)
             return redirect(url_for('web.homepage'))
         else:
@@ -72,3 +72,8 @@ def logout():
     db.session.commit()
     logout_user()
     return redirect(url_for("auth.login"))
+
+@auth.route("/profile", methods=["GET"])
+@login_required
+def profile():
+    return render_template("login.html")

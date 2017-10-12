@@ -67,7 +67,9 @@ class User(Base):
 
     def is_authenticated(self):
         """Return True if the user is authenticated."""
-        return True
+        if self.authenticated == True:
+            return True
+        return False
 
     def is_anonymous(self):
         """False, as anonymous users aren't supported."""
