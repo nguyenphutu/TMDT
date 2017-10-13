@@ -48,7 +48,7 @@ class UserService():
         return 'Error'
 
     def all(self):
-        return User.query.all()\
+        return User.query.all()
 
     def find_by_email(self, email):
         user = User.query.filter_by(email=email).first()

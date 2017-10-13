@@ -2811,11 +2811,11 @@ input.checkbox:checked:after {
     width: 100%;
     padding: 15px 40px;
     box-sizing: border-box;
-    color: #fff;
+    color: #84C639;
     text-align: center;
 }
 .form-module .cta a {
-    color: #84c639;
+    color: #fff;
     text-decoration: none;
     font-size: 1em;
 }

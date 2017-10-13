@@ -10,7 +10,7 @@ def products():
 def bread():
     return render_template("bread.html")
 
-@product.route('/checkout')
+@product.route('/checkout', methods = ['get', 'post'])
 def checkout():
     return render_template("checkout.html")
 
