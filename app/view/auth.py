@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, request, redirect, url_for, g
 from app import db, login_manager
 from app.service.user import UserService, UserDetailService
-from app.form import LoginForm, RegistrationForm
+from app.form import LoginForm, RegistrationForm, ForgotForm
 from flask_login import login_required, login_user, current_user, logout_user, UserMixin
 from app.model.user import User
 
@@ -25,7 +25,6 @@ def before_request():
 
 @auth.route('/register', methods = ['POST', 'GET'])
 def register():
-    error = None
     form = RegistrationForm()
     if request.method == 'POST':
         u_service = UserService(db)
@@ -44,12 +43,11 @@ def register():
             error = "Email is already exists"
             return render_template("register.html", form=form, error=error)
     else:
-        return render_template("register.html", form=form, error=error)
+        return render_template("register.html", form=form)
 
 @auth.route('/login', methods = ['POST', 'GET'])
 def login():
     error = None
-    print(g.user)
     form = LoginForm()
     if request.method == 'POST':
         u_service = UserService(db)
@@ -71,12 +69,28 @@ def logout():
     """Logout the current user."""
     user = current_user
     user.authenticated = False
-    db.session.add(user)
     db.session.commit()
     logout_user()
     return redirect(url_for("auth.login"))
 
-@auth.route("/profile", methods=["GET"])
+@auth.route("/forgot_password", methods=['GET', 'POST'])
 @login_required
-def profile():
-    return render_template("login.html")
+def forgot_password():
+    form = ForgotForm()
+    error = None
+    if request.method == 'POST':
+        u_service = UserService(db)
+        email = request.form['email']
+        user = u_service.find_by_email(email)
+        if user:
+            u_service.forgot_password(email)
+            return render_template("success_forgot_password.html")
+        else:
+            error = 'Invalid email! Account is not exist!'
+            render_template("login.html", form=form, error=error)
+    return render_template("login.html", form=form)
+
+# @auth.route("/profile", methods=["GET"])
+# @login_required
+# def profile():
+#     return render_template("login.html")
