@@ -4817,5 +4817,5 @@ input.checkbox:checked:after {
 
 .error-message{
     color: red;
-    margin: 0 0 20px 0;
+    margin: 10px 0 20px 0;
 }

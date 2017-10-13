@@ -5,6 +5,9 @@ class UserService():
         self.db = db
 
     def create_user(self, first_name, last_name, password, email, role=None, status=None):
+        user = self.find_by_email(email)
+        if user:
+            return None
         user = User()
         user.first_name = first_name
         user.last_name = last_name
@@ -17,6 +20,7 @@ class UserService():
             self.db.session.commit()
         except Exception as e:
             self.db.session.rollback()
+            return None
         return user
 
     def update_user(self, user_id, first_name, last_name, email, role=None, status=None):

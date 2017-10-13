@@ -10,9 +10,12 @@ Install dependencies::
 Start a PostgreSQL or Mysql server::
 
   make db
+  
+Migrate database:
+ flask db migrate
 
 Start the server::
 
-  env/bin/python app.py --reload
+  env/bin/python wsgi.py or env/bin/python wsgi.py --reload
 
 

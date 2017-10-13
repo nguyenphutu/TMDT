@@ -34,7 +34,6 @@ def register():
         email = request.form['email']
         password = request.form['password']
         user = u_service.create_user(first_name=first_name, last_name=last_name, email=email, password=password)
-        print(user)
         if user:
             user.authenticated = True
             db.session.add(user)
@@ -43,6 +42,7 @@ def register():
             return redirect(url_for('web.homepage'))
         else:
             error = "Email is already exists"
+            return render_template("register.html", form=form, error=error)
     else:
         return render_template("register.html", form=form, error=error)
 
