@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from flask_login import LoginManager
+from flask_migrate import Migrate
 
 # Define the WSGI application object
 # app = Flask(__name__, static_url_path='/static')
@@ -19,6 +20,7 @@ def handle_csrf_error(e):
     return render_template('csrf_error.html', reason=e.description)
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # Sample HTTP error handling
 @app.errorhandler(404)

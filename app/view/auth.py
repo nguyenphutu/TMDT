@@ -7,10 +7,10 @@ from app.model.user import User
 
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
-# Sample user
-class _User(UserMixin):
-    pass
-
+# # Sample user
+# class _User(UserMixin):
+#     pass
+#
 
 @login_manager.user_loader
 def load_user(id):
@@ -28,24 +28,28 @@ def register():
     error = None
     form = RegistrationForm()
     if request.method == 'POST':
-        print(request.form)
         u_service = UserService(db)
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email = request.form['email']
         password = request.form['password']
-        response = u_service.create_user(first_name=first_name, last_name=last_name, email=email, password=password)
-        if 'massage' in response:
-            error = response['massage']
-        else:
-            login_user(user=response['user'], remember=True)
+        user = u_service.create_user(first_name=first_name, last_name=last_name, email=email, password=password)
+        print(user)
+        if user:
+            user.authenticated = True
+            db.session.add(user)
+            db.session.commit()
+            login_user(user=user, remember=True)
             return redirect(url_for('web.homepage'))
+        else:
+            error = "Email is already exists"
     else:
         return render_template("register.html", form=form, error=error)
 
 @auth.route('/login', methods = ['POST', 'GET'])
 def login():
     error = None
+    print(g.user)
     form = LoginForm()
     if request.method == 'POST':
         u_service = UserService(db)
@@ -55,14 +59,13 @@ def login():
             user = u_service.find_by_email(email)
             user.authenticated = True
             db.session.commit()
-            print(user.is_authenticated)
             login_user(user=user, remember=True)
             return redirect(url_for('web.homepage'))
         else:
             error = 'Invalid username/password'
     return render_template("login.html", form=form, error = error)
 
-@auth.route("/logout", methods=["GET"])
+@auth.route("/logout", methods=["get"])
 @login_required
 def logout():
     """Logout the current user."""

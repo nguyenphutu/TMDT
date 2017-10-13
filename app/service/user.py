@@ -12,17 +12,12 @@ class UserService():
         user.role = role
         user.status = status
         user.set_password(password)
-
-        message = ''
         try:
             self.db.session.add(user)
             self.db.session.commit()
         except Exception as e:
-            message = 'Email is already exists'
             self.db.session.rollback()
-        if message != '':
-            return {'masage': message}
-        return {'user': user}
+        return user
 
     def update_user(self, user_id, first_name, last_name, email, role=None, status=None):
         user = User.query.filter_by(id=user_id).first()

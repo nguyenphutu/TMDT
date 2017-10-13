@@ -25,8 +25,8 @@
 					<div class="mega-dropdown-menu">
 						<div class="w3ls_vegetables">
 							<ul class="dropdown-menu drp-mnu">
-                                {% if current_user %}
-								<li><a href="{{ url_for('auth.profile') }}">Profile</a></li>
+                                {% if current_user.is_authenticated %}
+								<li>Hi {{ current_user.first_name.title() + ' ' + current_user.last_name.title() }}</li>
 								<li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                                 {% else %}
                                 <li><a href="{{ url_for('auth.login') }}">Login</a></li>

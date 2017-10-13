@@ -44,7 +44,8 @@ class User(Base):
     last_name = db.Column(db.String(25),  nullable=False)
     # Identification Data: email & password
     email = db.Column(db.String(128),  nullable=False, unique=True)
-    password = db.Column(db.String(50),  nullable=False)
+    password = db.Column(db.String(255),  nullable=False)
+    coins = db.Column(db.Integer, default=0)
     authenticated = db.Column(db.Boolean, default=False)
 
     # Authorisation Data: role & status
@@ -63,13 +64,11 @@ class User(Base):
 
     def get_id(self):
         """Return the email address to satisfy Flask-Login's requirements."""
-        return self.email
+        return self.id
 
     def is_authenticated(self):
         """Return True if the user is authenticated."""
-        if self.authenticated == True:
-            return True
-        return False
+        return True
 
     def is_anonymous(self):
         """False, as anonymous users aren't supported."""
