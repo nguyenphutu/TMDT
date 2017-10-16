@@ -6,11 +6,13 @@ from flask_login import login_required, login_user, current_user, logout_user
 from app.model.user import User
 from app.service.category import CategoryService
 from app.service.products import ProductService
+from .scripts import admin_required
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 @admin.route('/account', methods=['GET'])
 @login_required
+@admin_required
 def list_accounts():
     u_service = UserService(db)
     accounts = u_service.all()
@@ -18,6 +20,7 @@ def list_accounts():
 
 @admin.route('/account/create', methods=['GET', 'POST'])
 @login_required
+@admin_required
 def create_accounts():
     form = CreateAccount()
     u_service = UserService(db)
@@ -38,6 +41,8 @@ def create_accounts():
 
 @admin.route('/account/<id>/<action>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @login_required
+@admin_required
+
 def action_accounts(action):
     u_service = UserService(db)
     if id and action.lower() == 'delete':
@@ -50,6 +55,8 @@ def action_accounts(action):
 
 @admin.route('/create_manager', methods = ['POST', 'GET'])
 @login_required
+@admin_required
+
 def create_manager():
     form = RegistrationForm()
     if request.method == 'POST':
@@ -72,6 +79,8 @@ def create_manager():
 
 @admin.route('/products ', methods=['GET'])
 @login_required
+@admin_required
+
 def list_products():
     product_service = ProductService(db=db)
     products = product_service.all()
@@ -80,6 +89,8 @@ def list_products():
 
 @admin.route('/products/<category>', methods=['GET'])
 @login_required
+@admin_required
+
 def list_cate_products(category):
     cate_service = CategoryService(db=db)
     products = cate_service.get_product_of_cate(category_name=category.lower())
@@ -87,6 +98,8 @@ def list_cate_products(category):
 
 @admin.route('/products/<category_name>/<action>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @login_required
+@admin_required
+
 def action_cate_products(category_name, action):
     cate_service = CategoryService(db=db)
     category = cate_service.find_cate_by_name(category_name=category_name)
