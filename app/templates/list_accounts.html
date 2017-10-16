@@ -1,0 +1,74 @@
+{% extends "admin_base.html" %}
+{% set page = 'Accounts' %}
+{% set role = {'0': 'USER', '1': 'MANAGER', '2': 'ADMIN'} %}
+{% set status = {'0': 'INACTTIVE', '1': 'ACTIVE', '2': 'NEVER_LOGIN'} %}
+{% set SL_no = 0 %}
+
+{% block products_breadcrumb %}
+    {% include("parts/products_breadcrumb.html") %}
+{% endblock %}
+
+{% block right_banner %}
+<div class="w3l_banner_nav_right">
+<!-- about -->
+    <div class="privacy about">
+        <h3>Accounts</h3>
+
+      <div class="checkout-right">
+            <table class="timetable_sub">
+                <thead>
+                    <tr>
+                        <th>SL No.</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for account in accounts %}
+                {% set no_index = loop.index  %}
+                <tr class="rem">
+                    <td class="invert">{{ no_index }}</td>
+                    <td class="invert">{{ account.first_name + ' ' + account.last_name }}</td>
+                    <td class="invert">{{ account.email }}</td>
+
+                    <td class="invert">{{ role[account.role]}}</td>
+                    <td class="invert">{{ status[account.status] }}</td>
+                    <td class="invert" data-toggle="modal" data-target="#delete-modal">Delete</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="app-create-project-modal-text">
+                    Are you sure you want to <span>delete</span> this account ?
+                </p>
+            </div>
+            <div class="modal-footer app-create-project-modal-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-left" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button id="btn-confirm-delete" type="submit" class="btn btn-orange" >Yes, I want to delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

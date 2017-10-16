@@ -56,6 +56,7 @@ def login():
         if u_service.validate(email=email, password=password):
             user = u_service.find_by_email(email)
             user.authenticated = True
+            user.status = '1'
             db.session.commit()
             login_user(user=user, remember=True)
             return redirect(url_for('web.homepage'))

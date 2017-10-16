@@ -1,0 +1,54 @@
+{% extends "admin_base.html" %}
+{% if category %}
+    {% set page = 'Products/' + category %}
+{% else %}
+    {% set page = 'Products' %}
+{% endif %}
+
+{% block products_breadcrumb %}
+    {% include("parts/products_breadcrumb.html") %}
+{% endblock %}
+
+{% block right_banner %}
+<div class="w3l_banner_nav_right">
+    <div class="privacy about">
+        <h3>Products</h3>
+
+      <div class="checkout-right">
+            <table class="timetable_sub">
+                <thead>
+                    <tr>
+                        <th>SL No.</th>
+                        <th>Product</th>
+                        <th>Quality</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Sale</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for product in products %}
+                {% set no_index = loop.index  %}
+                <tr class="rem">
+                    <td class="invert">{{ no_index }}</td>
+                    <td class="invert-image"><a href="single.html"><img src="/static/images/1.png" alt=" " class="img-responsive"></a></td>
+                    <td class="invert">{{ product.quantity }}</td>
+
+                    <td class="invert">{{ product.name }}</td>
+                    <td class="invert">{{ product.price }}</td>
+                    <td class="invert">{{ product.sale }}</td>
+                    <td class="invert">Delete</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

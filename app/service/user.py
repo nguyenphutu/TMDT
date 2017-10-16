@@ -44,8 +44,8 @@ class UserService():
         if user:
             self.db.session.delete(user)
             self.db.session.commit()
-            return 'success'
-        return 'Error'
+            return user
+        return None
 
     def all(self):
         return User.query.all()

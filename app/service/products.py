@@ -4,6 +4,9 @@ class ProductService():
     def __init__(self, db):
         self.db = db
 
+    def all(self):
+        return Product.query.all()
+
     def create_product(self, name, info, so_luong, gia_ban, slug, category_id, category, sale=None):
         product = Product()
         product.name = name

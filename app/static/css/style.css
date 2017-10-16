@@ -2775,7 +2775,7 @@ input.checkbox:checked:after {
     font-weight: 400;
     line-height: 1;
 }
-.form-module input[type="text"],.form-module input[type="password"],.form-module input[type="email"] {
+.form-module input[type="text"],.form-module input[type="password"],.form-module input[type="email"],.form-module select {
   outline: none;
   display: block;
   width: 100%;
@@ -2788,10 +2788,11 @@ input.checkbox:checked:after {
   transition: 0.3s ease;
   font-size:14px;
 }
-.form-module input[type="text"]:focus,.form-module input[type="password"]:focus,.form-module input[type="email"]:focus {
+.form-module input[type="text"]:focus,.form-module input[type="password"]:focus,.form-module input[type="email"]:focus,.form-module select:focus {
   border:1px solid #A9A9A9;
   color: #333333;
 }
+
 .form-module input[type="submit"] {
   background:#84C639;
   width: 100%;
@@ -4818,4 +4819,8 @@ input.checkbox:checked:after {
 .error-message{
     color: red;
     margin: 10px 0 20px 0;
+}
+
+.caret{
+    margin-left: 10px;
 }

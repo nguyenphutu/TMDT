@@ -18,3 +18,15 @@ class CategoryService():
         if status != '':
             return status
         return category
+
+    def find_cate_by_name(self, category_name):
+        category = Category.query.filter_by(name=category_name)
+        if category:
+            return category
+        return None
+
+    def get_product_of_cate(self, category_name):
+        category = Category.query.filter_by(name=category_name).first()
+        if category:
+            return category.products
+        return []

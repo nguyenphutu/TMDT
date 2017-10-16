@@ -43,6 +43,7 @@ login_manager.login_view = "auth.login"
 #### import module ####
 #######################
 from app.view.auth import auth as auth_module
+from app.view.admin import admin as admin_module
 from app.view.index import web as home_module
 from app.view.products import product as product_module
 from app.view.contact import contact as contact_module
@@ -51,6 +52,7 @@ from app.view.contact import contact as contact_module
 #### module ####
 ################
 app.register_blueprint(auth_module)
+app.register_blueprint(admin_module)
 app.register_blueprint(home_module)
 app.register_blueprint(product_module)
 app.register_blueprint(contact_module)

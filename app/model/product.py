@@ -6,8 +6,8 @@ class Product(Base):
 
     name = db.Column(db.String(255),  nullable=False)
     info = db.Column(db.Text,  nullable=False)
-    so_luong = db.Column(db.Integer, nullable=False)
-    gia_ban = db.Column(db.Float, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float, nullable=False)
     sale = db.Column(db.Integer, nullable=True)
     slug = db.Column(db.Text,  nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categorys.id'), nullable=False)
