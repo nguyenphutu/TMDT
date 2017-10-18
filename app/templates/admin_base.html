@@ -1,168 +1,135 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-{% block head_meta %}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="Gretong Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
-    Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
-{% endblock %}
-
-<title>{% block title %}Demo{% endblock title %}</title>
-
-{% block shared_styles %}
-<link href="{{ url_for('static', filename = 'css/bootstrap.css') }}" rel='stylesheet' type='text/css' />
-<!-- jQuery (necessary JavaScript plugins) -->
-<script type='text/javascript' src="{{ url_for('static', filename = 'js/jquery-1.11.1.min.js') }}"></script>
-<script type='text/javascript' src="{{ url_for('static', filename = 'js/move-top.js') }}"></script>
-<script type='text/javascript' src="{{ url_for('static', filename = 'js/easing.js') }}"></script>
-<script type="text/javascript">
-	jQuery(document).ready(function($) {
-		$(".scroll").click(function(event){
-			event.preventDefault();
-			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
-		});
-	});
-</script>
-
-<!-- Custom Theme files -->
-<link href="{{ url_for('static', filename = 'css/style.css') }}" rel='stylesheet' type='text/css' />
-<link href="{{ url_for('static', filename = 'css/font-awesome.css') }}" rel='stylesheet' type='text/css' />
-
-<link href='//fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
-<!--flexslider-->
-<link href="{{ url_for('static', filename = 'css/flexslider.css') }}" rel='stylesheet' type='text/css' />
-<script type='text/javascript' src="{{ url_for('static', filename = 'js/jquery.flexslider.js') }}"></script>
-
-{% endblock %}
-
-{% block styles %}
-    {# styles #}
-{% endblock styles %}
-
-{% block scripts %}
-    {# scripts #}
-{% endblock scripts %}
-
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Admin</title>
+  <!-- Bootstrap core CSS-->
+  <link href="{{ url_for('static', filename='admin/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link href="{{ url_for('static', filename='admin/vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+  <!-- Page level plugin CSS-->
+  <link href="{{ url_for('static', filename='admin/vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
+  <!-- Custom styles for this template-->
+  <link href="{{ url_for('static', filename='admin/css/sb-admin.css') }}" rel="stylesheet">
 </head>
-<body>
-{% include("parts/header.html") %}
 
-{% block products_breadcrumb %}
-{% endblock %}
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="{{ url_for('admin.dashboard') }}">Admin/Manage</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="{{ url_for('admin.dashboard') }}">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="{{ url_for('admin.list_accounts') }}">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <span class="nav-link-text">Accounts</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="{{ url_for('admin.list_products') }}">
+            <i class="fa fa-cubes" aria-hidden="true"></i>
+            <span class="nav-link-text">Products</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="#{#{ url_for('admin.list_products') }#}">
+            <i class="fa fa-fw fa-shopping-cart"></i>
+            <span class="nav-link-text">Oders</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="#{#{ url_for('admin.statistic') }#}">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">Statistic</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">{{ page }}</li>
+      </ol>
+      {% block content %}
 
-<!-- banner -->
-	<div class="banner">
-		<div class="w3l_banner_nav_left">
-			<nav class="navbar nav_bottom">
-			 <!-- Brand and toggle get grouped for better mobile display -->
-			  <div class="navbar-header nav_2">
-				  <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				  </button>
-			   </div>
-			   <!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
-					<ul class="nav navbar-nav nav_1">
-						<li class="dropdown">
-							<a href="{{ url_for('admin.list_accounts') }}" class="dropdown-toggle" data-toggle="dropdown">Accounts     <span class="caret"></span></a>
-							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
-								<div class="w3ls_vegetables">
-									<ul>
-										<li><a href="{{ url_for('admin.create_accounts') }}">Create Account</a></li>
-									</ul>
-								</div>
-							</div>
-						</li>
-						<li class="dropdown">
-							<a href="{{ url_for('products.products') }}" class="dropdown-toggle" data-toggle="dropdown">Products     <span class="caret"></span></a>
-							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
-								<div class="w3ls_vegetables">
-									<ul>
-										<li><a href="{{ url_for('admin.create_accounts') }}">Create Account</a></li>
-										<li><a href="{{ url_for('admin.create_accounts') }}">Create Account</a></li>
-										<li><a href="{{ url_for('admin.create_accounts') }}">Create Account</a></li>
-									</ul>
-								</div>
-							</div>
-						</li>
-                    </ul>
-				 </div><!-- /.navbar-collapse -->
-			</nav>
-		</div>
-		{% block right_banner %}
-
-        {% endblock %}
-		<div class="clearfix"></div>
-	</div>
-<!-- banner -->
-
-<!--content-->
-{% block content %}
-
-{% endblock%}
-{% include("parts/admin_footer.html") %}
-
-    <!-- Bootstrap Core JavaScript -->
-<script src="{{ url_for('static', filename = 'js/bootstrap.min.js') }}" ></script>
-
-<script>
-    $(document).ready(function(){
-        $(".dropdown").hover(
-            function() {
-                $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
-                $(this).toggleClass('open');
-            },
-            function() {
-                $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
-                $(this).toggleClass('open');
-            }
-        );
-    });
-</script>
-<!-- here stars scrolling icon -->
-<script type="text/javascript">
-		$(document).ready(function() {
-			/*
-				var defaults = {
-				containerID: 'toTop', // fading element id
-				containerHoverID: 'toTopHover', // fading element hover id
-				scrollSpeed: 1200,
-				easingType: 'linear'
-				};
-			*/
-
-			$().UItoTop({ easingType: 'easeOutQuart' });
-
-			});
-</script>
-<!-- //here ends scrolling icon -->
-<script type='text/javascript' src="{{ url_for('static', filename = 'js/minicart.js') }}"></script>
-
-<!--<script>-->
-    <!--paypal.minicart.render();-->
-
-    <!--paypal.minicart.cart.on('checkout', function (evt) {-->
-        <!--var items = this.items(),-->
-            <!--len = items.length,-->
-            <!--total = 0,-->
-            <!--i;-->
-
-        <!--// Count the number of each item in the cart-->
-        <!--for (i = 0; i < len; i++) {-->
-            <!--total += items[i].get('quantity');-->
-        <!--}-->
-
-        <!--if (total < 3) {-->
-            <!--alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');-->
-            <!--evt.preventDefault();-->
-        <!--}-->
-    <!--});-->
-
-<!--</script>-->
+      {% endblock %}
+    </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © Your Website 2017</small>
+        </div>
+      </div>
+    </footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-primary" href="{{ url_for('auth.logout') }}">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ url_for('static', filename='admin/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/vendor/popper/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="{{ url_for('static', filename='admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="{{ url_for('static', filename='admin/vendor/datatables/jquery.dataTables.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/vendor/datatables/dataTables.bootstrap4.js') }}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="{{ url_for('static', filename='admin/js/sb-admin.min.js') }}"></script>
+    <!-- Custom scripts for this page-->
+    <script src="{{ url_for('static', filename='admin/js/sb-admin-datatables.min.js') }}"></script>
+  </div>
 </body>
+
 </html>

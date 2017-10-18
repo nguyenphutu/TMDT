@@ -6,9 +6,22 @@ from flask_login import login_required, login_user, current_user, logout_user
 from app.model.user import User
 from app.service.category import CategoryService
 from app.service.products import ProductService
-from .scripts import admin_required
+from .scripts import admin_required, manage_required
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
+
+
+@admin.route('/', methods=['GET'])
+@login_required
+@manage_required
+def dashboard():
+    u_service = UserService(db)
+    p_service = ProductService(db)
+    n_accounts = len(u_service.all())
+    n_products = len(p_service.all())
+
+    return render_template("dashboard.html", n_accounts=n_accounts, n_products=n_products)
+
 
 @admin.route('/account', methods=['GET'])
 @login_required
@@ -77,9 +90,9 @@ def create_manager():
     else:
         return render_template("create_manager.html", form=form)
 
-@admin.route('/products ', methods=['GET'])
+@admin.route('/products', methods=['GET'])
 @login_required
-@admin_required
+@manage_required
 
 def list_products():
     product_service = ProductService(db=db)
@@ -89,7 +102,7 @@ def list_products():
 
 @admin.route('/products/<category>', methods=['GET'])
 @login_required
-@admin_required
+@manage_required
 
 def list_cate_products(category):
     cate_service = CategoryService(db=db)
@@ -98,7 +111,7 @@ def list_cate_products(category):
 
 @admin.route('/products/<category_name>/<action>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @login_required
-@admin_required
+@manage_required
 
 def action_cate_products(category_name, action):
     cate_service = CategoryService(db=db)

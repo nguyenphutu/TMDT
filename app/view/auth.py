@@ -72,7 +72,7 @@ def logout():
     user.authenticated = False
     db.session.commit()
     logout_user()
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("web.homepage"))
 
 @auth.route("/forgot_password", methods=['GET', 'POST'])
 @login_required
