@@ -35,6 +35,7 @@ class OrderDetail(Base):
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     product = db.relationship('Product', lazy=True)
     quantity = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float, nullable=False)
 
     def __repr__(self):
         return '<order details %r>' % (self.order)

@@ -3,6 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from flask_login import LoginManager
 from flask_migrate import Migrate
+import time
+
+def get_time():
+    return str(time.time())
 
 # Define the WSGI application object
 # app = Flask(__name__, static_url_path='/static')

@@ -406,3 +406,27 @@ footer.sticky-footer {
 .Never-login{
     background-color: #333
 }
+.add-user{
+    font-size: 12px;
+}
+#add-user-form input,#add-user-form select{
+    margin-bottom: 10px;
+}
+.invert-image .product-img{
+    width: 60px;
+    margin: 0px auto;
+}
+.invert-image .product-img img{
+    width: 100%;
+}
+.input-img-file{
+    visibility: hidden;
+}
+.product-thumbnail{
+    max-width: 150px;
+    margin: 0px auto;
+    cursor: pointer;
+}
+.product-thumbnail img{
+    width 100%;
+}

@@ -4,6 +4,9 @@ class CategoryService():
     def __init__(self, db):
         self.db = db
 
+    def all(self):
+        return Category.query.all()
+
     def create_category(self, name):
         category = Category()
         category.name = name

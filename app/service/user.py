@@ -8,30 +8,33 @@ class UserService():
         user = self.find_by_email(email)
         if user:
             return None
-        user = User()
-        user.first_name = first_name
-        user.last_name = last_name
-        user.email = email
-        user.role = role
-        user.status = status
-        user.set_password(password)
         try:
+            user = User()
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
+            user.role = role
+            user.status = status
+            user.set_password(password)
             self.db.session.add(user)
             self.db.session.commit()
+            return user
         except Exception as e:
             self.db.session.rollback()
             return None
-        return user
 
-    def update_user(self, user_id, first_name, last_name, email, role=None, status=None):
-        user = User.query.filter_by(id=user_id).first()
-        user.first_name = first_name
-        user.last_name = last_name
-        user.email = email
-        user.role = role
-        user.status = status
-        self.db.session.commit()
-
+    def update_user(self, user_id, first_name, last_name, email, role=None):
+        try:
+            user = User.query.filter_by(id=user_id).first()
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
+            user.role = role
+            self.db.session.commit()
+            return user
+        except Exception as e:
+            self.db.session.rollback()
+            return None
     def change_password(self, user_id, old_password, new_password):
         user = User.query.filter_by(id=user_id).first()
         if user.check_password(password=old_password) :

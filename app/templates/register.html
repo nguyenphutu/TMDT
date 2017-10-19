@@ -1,8 +1,4 @@
-{% if current_user.role == '2' %}
-{% extends "admin_base.html" %}
-{% else %}
 {% extends "base.html" %}
-{% endif %}
 {% set page = 'Sign In & Sign Up' %}
 
 {% block products_breadcrumb %}
@@ -17,11 +13,7 @@
 				<div class="module form-module">
 				  <div class="form">
 					<h2>Create an account</h2>
-                  {% if current_user.role == '2' %}
-                      <form action="{{ url_for('admin.create_accounts') }}" method="POST">
-                  {% else %}
 					<form action="{{ url_for('auth.register') }}" method="POST">
-                  {% endif %}
 					  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 					  <input type="text" name="first_name" placeholder="First name" required=" ">
 					  <input type="text" name="last_name" placeholder="Last name" required=" ">

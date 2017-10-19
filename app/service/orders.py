@@ -41,7 +41,7 @@ class OrderDetailService():
     def __init__(self, db):
         self.db = db
 
-    def create_order_detail(self, order_id, product_id, quantity):
+    def create_order_detail(self, order_id, product_id, quantity, price):
         order_detail = OrderDetail()
 
         order = Order.query.filter_by(id=order_id).first()
@@ -53,6 +53,7 @@ class OrderDetailService():
         product_service = ProductService(self.db)
         product = product_service.find_product_by_id(product_id)
         order_detail.product = product
+        order_detail.price = price
 
         try:
             self.db.add(order_detail)

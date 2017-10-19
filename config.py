@@ -30,3 +30,5 @@ CSRF_SESSION_KEY = "secret"
 SECRET_KEY = "secret"
 WTF_CSRF_SECRET_KEY = 'secret'
 
+UPLOAD_FOLDER = 'app/static/products'
+

@@ -51,7 +51,7 @@
 <div class="text-center">
   <h2>404 Not Found</h2>
   <p>Oh no, you found a broken link.</p>
-  <a href="{{ url_for('web.homepage') }}">Go Home</a>
+  <a href="{% if current_user.role in ['1', '2'] %} {{ url_for('admin.dashboard') }} {% else %} {{ url_for('web.homepage') }} {% endif %}">Go Home</a>
 </div>
 </body>
 </html>

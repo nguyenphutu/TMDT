@@ -4,7 +4,7 @@ from app import db
 class Product(Base):
     __tablename__ = 'products'
 
-    name = db.Column(db.String(255),  nullable=False)
+    name = db.Column(db.String(255),  nullable=False, unique=True)
     info = db.Column(db.Text,  nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)

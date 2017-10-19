@@ -7,4 +7,4 @@ class Category(Base):
     url = db.Column(db.String(255),  nullable=False)
 
     def __repr__(self):
-        return f'Category {self.name}'
+        return self.name

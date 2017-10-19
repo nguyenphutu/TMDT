@@ -1,6 +1,10 @@
 (function($) {
   "use strict"; // Start of use strict
   // Configure tooltips for collapsed side navigation
+  $('.btn-delete-account').click(function(){
+        $('#delete-user-form').attr('action', $(this).data('id'));
+   });
+
   $('.navbar-sidenav [data-toggle="tooltip"]').tooltip({
     template: '<div class="tooltip navbar-sidenav-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
   })
@@ -42,4 +46,5 @@
     }, 1000, 'easeInOutExpo');
     event.preventDefault();
   });
+
 })(jQuery); // End of use strict
