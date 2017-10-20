@@ -1,5 +1,5 @@
 from app import db
-from .base import Base
+from app.model.base import Base
 
 class Category(Base):
     __tablename__ = 'categorys'

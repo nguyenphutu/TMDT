@@ -47,6 +47,7 @@ from app.view.admin import admin as admin_module
 from app.view.index import web as home_module
 from app.view.products import product as product_module
 from app.view.contact import contact as contact_module
+from app.view.templates import template as template_module
 
 ################
 #### module ####
@@ -56,6 +57,7 @@ app.register_blueprint(admin_module)
 app.register_blueprint(home_module)
 app.register_blueprint(product_module)
 app.register_blueprint(contact_module)
+app.register_blueprint(template_module)
 
 db.create_all()
 
@@ -70,5 +72,5 @@ def get_time():
     import time
     return time.time()
 
-app.jinja_env.globals['categories'] = categories()
+app.jinja_env.globals['categories'] = categories
 app.jinja_env.globals['get_time'] = get_time()

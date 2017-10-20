@@ -1,0 +1,134 @@
+{% extends "admin_base.html" %}
+{% set page = 'Category' %}
+
+{% block content %}
+<!-- Example DataTables Card-->
+{% if add_status == 'success' %}
+    <div class="alert alert-block alert-success">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="fa fa-times"></i>
+        </button>
+        <strong>Success!</strong> create category successfully.
+    </div>
+{% elif add_status == 'error' %}
+    <div class="alert alert-block alert-warning">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="fa fa-times"></i>
+        </button>
+        <strong>Warning!</strong> Name category already exists.
+    </div>
+{% endif %}
+{% with success = get_flashed_messages(category_filter=["success"]) %}
+{% if success %}
+    <div class="alert alert-block alert-success">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="fa fa-times"></i>
+        </button>
+        <strong>Success!</strong> {{success[0]}}
+    </div>
+{% endif %}
+{% endwith %}
+
+  <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-table"></i> Data Table Category
+            <button type="button" data-toggle="modal" data-target="#add-user" class="btn btn-warning add-user">
+              ADD Category
+                <span class="icon">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                    <tr>
+                        <th>SL No.</th>
+                        <th>Name</th>
+                        <th>Url</th>
+                        <th></th>
+                    </tr>
+              </thead>
+              <tbody>
+              {% for cate in categories() %}
+              {% set no_index = loop.index  %}
+              <tr class="rem">
+                  <td class="invert">{{ no_index }}</td>
+                  <td class="invert">{{ cate.name }}</td>
+                  <td class="invert">{{ cate.url }}</td>
+                  <td class="invert">
+                      <a class="fa-icon" href="{{url_for('admin.action_cates', id=cate.id, action='edit')}}">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </a>
+                      <a class="fa-icon btn-delete-account" data-toggle="modal" data-target="#delete-cate" data-id="{{url_for('admin.action_cates', id=cate.id, action='delete')}}">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      </a>
+                  </td>
+              </tr>
+              {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                    <th>SL No.</th>
+                    <th>Name</th>
+                    <th>Url</th>
+                    <th></th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+      </div>
+
+<!--Modal add user-->
+<div class="modal fade" id="add-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create new category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ url_for('admin.list_category') }}" id="add-user-form" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="text" name="name" class="form-control" placeholder="Name of category">
+            <p class="error-message"></p>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="btn-submit">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--delete modal-->
+<div class="modal fade" id="delete-cate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ready to Delete?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Select "Delete" below if you are ready to delete this category.</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <form id="delete-user-form" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='admin/js/add-user.js') }}"></script>
+{% endblock %}

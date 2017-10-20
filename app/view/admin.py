@@ -260,3 +260,52 @@ def action_cate_products(category, id, action):
             abort(404)
 
     abort(404)
+
+@admin.route('/category', methods=['GET', 'POST'])
+@login_required
+@manage_required
+def list_category():
+    cate_survice = CategoryService(db)
+    if request.method == 'POST':
+        name = request.form['name']
+        cate = cate_survice.create_category(name=name)
+        if cate:
+            add_status = 'success'
+            return render_template("admin_category.html", add_status=add_status)
+        else:
+            add_status = 'error'
+            return render_template("admin_category.html", add_status=add_status)
+    return render_template("admin_category.html")
+
+@admin.route('/category/<id>/<action>', methods=['GET', 'POST'])
+@login_required
+@manage_required
+def action_cates(id, action):
+    cate_survice = CategoryService(db)
+    if id and action.lower() == 'delete':
+        if request.method == 'POST':
+            cate = cate_survice.delete_cate(id=id)
+            if cate:
+                flash(u'Delete category successfully', 'success')
+                return redirect(url_for('admin.list_category'))
+            abort(404)
+        else:
+            abort(404)
+    if id and action.lower() == 'edit':
+        cate = cate_survice.find_cate_by_id(id=id)
+        if cate:
+            if request.method == 'POST':
+                name = request.form['name']
+                url = request.form['url']
+                new_cate = cate_survice.change_category(id=cate.id, name=name, url=url)
+                if new_cate:
+                    flash(u'Update account successfully', 'success')
+                    return redirect(url_for('admin.list_category'))
+                else:
+                    return render_template("edit_cate.html", cate=cate, error='Error email or some field please update again')
+            else:
+                return render_template("edit_cate.html", cate = cate)
+        else:
+            abort(404)
+
+    abort(404)

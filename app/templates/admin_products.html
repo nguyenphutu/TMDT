@@ -140,7 +140,7 @@
                 <label for="category">Category</label>
                 <select name="category" id="category" class="form-control">
                   <option value=''>Select category</option>
-                  {% for cate in categories %}
+                  {% for cate in categories() %}
                   <option value={{cate.id}} {% if category and cate.name == category %} selected {% endif %}>{{cate|title}}</option>
                   {% endfor %}
                 </select>
@@ -178,7 +178,7 @@
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body">Select "Delete" below if you are ready to delete this account.</div>
+      <div class="modal-body">Select "Delete" below if you are ready to delete this product.</div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
         <form id="delete-user-form" method="POST">
