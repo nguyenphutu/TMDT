@@ -193,19 +193,19 @@ def list_cate_products(category):
             products = cate_service.get_product_of_cate(category_name=category.lower())
             if ('file_image' not in request.files) or (request.files["file_image"].filename == ''):
                 add_status = 'warring'
-                return render_template("admin_products.html", products=products, add_status=add_status)
+                return render_template("admin_products.html", products=products, category=category.lower(), add_status=add_status)
             image = request.files['file_image']
             if image and allowed_file(image.filename):
                 product_img_name = product.slug + '.jpg'
                 image.save(os.path.join('app/static/products/', product_img_name))
                 # image.save(os.path.join(url_for('static', filename='products/'), product_img_name))
                 add_status = 'success'
-                return render_template("admin_products.html", products=products, add_status=add_status)
+                return render_template("admin_products.html", products=products, category=category.lower(), add_status=add_status)
             add_status = 'warring'
-            return render_template("admin_products.html", products=products, add_status=add_status)
+            return render_template("admin_products.html", products=products, category=category.lower(), add_status=add_status)
         else:
             add_status = 'error'
-            return render_template("admin_products.html", products=products, add_status=add_status)
+            return render_template("admin_products.html", products=products, category=category.lower(), add_status=add_status)
     return render_template("admin_products.html", products=products, category=category.lower())
 
 @admin.route('/products/<category>/<id>/<action>', methods=['GET', 'POST', 'PUT', 'DELETE'])

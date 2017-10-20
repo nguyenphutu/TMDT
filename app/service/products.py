@@ -34,7 +34,7 @@ class ProductService():
             category = Category.query.filter_by(id=category_id).first()
             product.name = name
             product.info = info
-            product.quantity = quantity
+            product.quantity = product.quantity + int(quantity)
             product.price = price
             product.sale = sale
             product.category_id = category_id
@@ -77,3 +77,8 @@ class ProductService():
             self.db.session.commit()
             return product
         return None
+
+    def get_product_sale(self):
+        product = Product.query.filter(Product.sale > 0).order_by(Product.sale.desc())
+        return product
+

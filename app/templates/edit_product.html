@@ -19,13 +19,17 @@
               <div class="form-row">
                   <div class="col-md-6">
                       <div class="product-thumbnail" id="change-product-img">
-                        <img id="product-image" src="{{ url_for('static', filename='products/' + product.slug + '.jpg' ) }}"/>
+                        <img id="product-image" alt="product-image" src="{{ url_for('static', filename='products/' + product.slug + '.jpg' ) }}"/>
                       </div>
                       <input class="form-control input-img-file" type="file" id="image" name="file_image">
                   </div>
                   <div class="col-md-6">
                       <label for="sale">Sale</label>
-                      <input class="form-control" type="text" id="sale" name="sale" value="{{ product.sale or 0 }}">
+                      <select name="sale" id="sale" class="form-control">
+                          {% for sale in range(0,55,5) %}
+                          <option value={{sale}} {% if product.sale == cate %} selected {% endif %}>{{sale}}</option>
+                          {% endfor %}
+                      </select>
                   </div>
               </div>
           </div>
@@ -38,7 +42,11 @@
               </div>
               <div class="col-md-6">
                 <label for="quantity">Quantity</label>
-                <input class="form-control" id="quantity" type="text" name="quantity" value="{{ product.quantity }}">
+                <select name="quantity" id="quantity" class="form-control">
+                  {% for quantity in range(50,550,50) %}
+                  <option value={{quantity}} {% if product.quantity == quantity %} selected {% endif %}>{{quantity}}</option>
+                  {% endfor %}
+                </select>
               </div>
             </div>
           </div>
@@ -52,7 +60,7 @@
                 <label for="category">Category</label>
                 <select name="category" id="category" class="form-control">
                   <option value=''>Select category</option>
-                  {% for cate in categories %}
+                  {% for cate in categories() %}
                   <option value={{cate.id}} {% if product.category_id == cate.id %} selected {% endif %}>{{cate.name}}</option>
                   {% endfor %}
                 </select>

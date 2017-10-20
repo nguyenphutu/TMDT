@@ -48,7 +48,7 @@
             <span class="nav-link-text">Products</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseProducts">
-            {% for cate in categories %}
+            {% for cate in categories() %}
                 <li>
                   <a href="{{ url_for('admin.list_cate_products', category=cate.name) }}">{{cate|title}}</a>
                 </li>

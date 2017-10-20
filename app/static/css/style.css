@@ -4824,3 +4824,6 @@ input.checkbox:checked:after {
 .caret{
     margin-left: 10px;
 }
+.product-image-detail{
+    width: 100%
+}

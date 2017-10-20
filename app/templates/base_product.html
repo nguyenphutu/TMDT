@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% set page = category|title %}
+
+{% block products_breadcrumb %}
+    {% include("parts/products_breadcrumb.html") %}
+{% endblock %}
+{% block right_banner %}
+    <div class="w3l_banner_nav_right">
+		{% if category_banner %}
+		    {% include("parts/" + category_banner + ".html") %}
+		{% endif %}
+		<div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_sub">
+			<h3 class="w3l_fruit">{{ page }}</h3>
+            <div class="w3ls_w3l_banner_nav_right_grid1 w3ls_w3l_banner_nav_right_grid1_veg">
+            {% for product in products %}
+            {% set no_index = loop.index  %}
+                <div class="col-md-3 w3ls_w3l_banner_left {% if no_index==1 %}w3ls_w3l_banner_left_asdfdfd{% elif no_index % 3 == 0 %}w3ls_w3l_banner_left_asd{% endif %}">
+					<div class="hover14 column">
+					<div class="agile_top_brand_left_grid w3l_agile_top_brand_left_grid">
+						<div class="agile_top_brand_left_grid_pos">
+							<img src="{{ url_for('static', filename = 'images/offer.png') }}" alt=" " class="img-responsive" />
+						</div>
+						<div class="agile_top_brand_left_grid1">
+							<figure>
+								<div class="snipcart-item block">
+									<div class="snipcart-thumb">
+										<a href="{{ url_for('products.product_detail', id=product.id) }}"><img src="{{ url_for('static', filename = 'products/' + product.slug + '.jpg') }}" alt=" " class="img-responsive" /></a>
+										<p>{{ product.name }}</p>
+										<h4>$4.00 <span>${{ product.price }}</span></h4>
+									</div>
+									<div class="snipcart-details">
+										<form action="#" method="post">
+											<fieldset>
+												<input type="hidden" name="cmd" value="_cart" />
+												<input type="hidden" name="add" value="1" />
+												<input type="hidden" name="business" value=" " />
+												<input type="hidden" name="item_name" value="{{ product.name }}" />
+												<input type="hidden" name="amount" value="{{ product.price }}" />
+												<input type="hidden" name="discount_amount" value="{{ product.sale }}" />
+												<input type="hidden" name="currency_code" value="USD" />
+												<input type="hidden" name="return" value=" " />
+												<input type="hidden" name="cancel_return" value=" " />
+												<input type="submit" name="submit" value="Add to cart" class="button" />
+											</fieldset>
+										</form>
+									</div>
+								</div>
+							</figure>
+						</div>
+					</div>
+					</div>
+				</div>
+                {% if no_index == products|length %}
+                    <div class="clearfix"></div>
+                    </div>
+                {% endif %}
+                {% if no_index % 4 == 0 %}
+                    <div class="clearfix"></div>
+                    </div>
+                    {% if no_index != products|length %}
+                    <div class="w3ls_w3l_banner_nav_right_grid1 w3ls_w3l_banner_nav_right_grid1_veg">
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+	</div>
+{% endblock %}
+{% block content %}
+
+{% endblock %}
