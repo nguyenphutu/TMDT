@@ -3,10 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from flask_login import LoginManager
 from flask_migrate import Migrate
-import time
-
-def get_time():
-    return str(time.time())
 
 # Define the WSGI application object
 # app = Flask(__name__, static_url_path='/static')
@@ -62,3 +58,17 @@ app.register_blueprint(product_module)
 app.register_blueprint(contact_module)
 
 db.create_all()
+
+#jinjia2 config
+from app.service.category import CategoryService
+
+@app.template_global(name='categories')
+def categories():
+    cate_survice = CategoryService(db)
+    return cate_survice.all()
+def get_time():
+    import time
+    return time.time()
+
+app.jinja_env.globals['categories'] = categories()
+app.jinja_env.globals['get_time'] = get_time()

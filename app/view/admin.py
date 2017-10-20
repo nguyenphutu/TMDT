@@ -63,6 +63,7 @@ def action_accounts(id, action):
     if id and action.lower() == 'delete':
         if request.method == 'POST':
             user = u_service.delete_user(user_id=id)
+            flash(u'Delete account successfully', 'success')
             return redirect(url_for('admin.list_accounts'))
         else:
             abort(404)
@@ -76,7 +77,7 @@ def action_accounts(id, action):
                 role = request.form['role']
                 account = u_service.update_user(user_id=user.id, first_name=first_name, last_name=last_name, email=email, role=role)
                 if account:
-                    flash(u'Update account success', 'success')
+                    flash(u'Update account successfully', 'success')
                     return redirect(url_for('admin.list_accounts'))
                 else:
                     return render_template("create_manager.html", account=user, error='Error email or some field please update again')
@@ -93,8 +94,6 @@ def action_accounts(id, action):
 
 def list_products():
     product_service = ProductService(db=db)
-    category_service = CategoryService(db=db)
-    categorys = category_service.all()
     products = product_service.all()
     if request.method == 'POST':
         name = request.form['name']
@@ -107,19 +106,20 @@ def list_products():
             products = product_service.all()
             if ('file_image' not in request.files) or (request.files["file_image"].filename == ''):
                 add_status = 'warring'
-                return render_template("admin_products.html", products=products, add_status=add_status, categorys=categorys)
+                return render_template("admin_products.html", products=products, add_status=add_status)
             image = request.files['file_image']
             if image and allowed_file(image.filename):
-                filename = product.slug + '.jpg'
-                image.save(os.path.join('app/static/products', filename))
+                product_img_name = product.slug + '.jpg'
+                image.save(os.path.join('app/static/products/', product_img_name))
+                # image.save(os.path.join(url_for('static', filename='products/'), product_img_name))
                 add_status = 'success'
-                return render_template("admin_products.html", products=products, add_status=add_status, categorys=categorys)
+                return render_template("admin_products.html", products=products, add_status=add_status)
             add_status = 'warring'
-            return render_template("admin_products.html", products=products, add_status=add_status, categorys=categorys)
+            return render_template("admin_products.html", products=products, add_status=add_status)
         else:
             add_status = 'error'
-            return render_template("admin_products.html", products=products, add_status=add_status, categorys=categorys)
-    return render_template("admin_products.html", products=products, categorys=categorys, time=time.time())
+            return render_template("admin_products.html", products=products, add_status=add_status)
+    return render_template("admin_products.html", products=products)
 
 @admin.route('/products/<id>/<action>', methods=['GET', 'POST'])
 @login_required
@@ -131,7 +131,12 @@ def action_product(id, action):
     if id and action.lower() == 'delete':
         if request.method == 'POST':
             product = product_service.delete(id=id)
-            return redirect(url_for('admin.list_products'))
+            if product:
+                product_img_name = product.slug + '.jpg'
+                os.remove(os.path.join('app/static/products/', product_img_name))
+                flash(u'Delete product successfully', 'success')
+                return redirect(url_for('admin.list_products'))
+            abort(404)
         else:
             abort(404)
     if id and action.lower() == 'edit':
@@ -153,9 +158,10 @@ def action_product(id, action):
                     if 'file_image' in request.files and request.files['file_image'].filename != '':
                         image = request.files['file_image']
                         if image and allowed_file(image.filename):
-                            filename = product.slug + '.jpg'
-                            image.save(os.path.join('app/static/products', filename))
-                            flash(u'Update product success', 'success')
+                            product_img_name = product.slug + '.jpg'
+                            image.save(os.path.join('app/static/products/', product_img_name))
+                            # image.save(os.path.join(url_for('static', filename='products/'), product_img_name))
+                            flash(u'Update product successfully', 'success')
                             return redirect(url_for('admin.list_products'))
 
                     flash(u'Update product success', 'success')
@@ -169,24 +175,88 @@ def action_product(id, action):
 
     abort(404)
 
-@admin.route('/products/<category>', methods=['GET'])
+@admin.route('/products/<category>', methods=['GET', 'POST'])
 @login_required
 @manage_required
-
 def list_cate_products(category):
+    product_service = ProductService(db=db)
     cate_service = CategoryService(db=db)
     products = cate_service.get_product_of_cate(category_name=category.lower())
-    return render_template("admin_products.html", products=products, category=category.title())
+    if request.method == 'POST':
+        name = request.form['name']
+        category_id = request.form['category']
+        price = request.form['price']
+        quantity = request.form['quantity']
+        info = request.form['info']
+        product = product_service.create_product(name=name, category_id=category_id, price=price, quantity=quantity, info=info)
+        if product:
+            products = cate_service.get_product_of_cate(category_name=category.lower())
+            if ('file_image' not in request.files) or (request.files["file_image"].filename == ''):
+                add_status = 'warring'
+                return render_template("admin_products.html", products=products, add_status=add_status)
+            image = request.files['file_image']
+            if image and allowed_file(image.filename):
+                product_img_name = product.slug + '.jpg'
+                image.save(os.path.join('app/static/products/', product_img_name))
+                # image.save(os.path.join(url_for('static', filename='products/'), product_img_name))
+                add_status = 'success'
+                return render_template("admin_products.html", products=products, add_status=add_status)
+            add_status = 'warring'
+            return render_template("admin_products.html", products=products, add_status=add_status)
+        else:
+            add_status = 'error'
+            return render_template("admin_products.html", products=products, add_status=add_status)
+    return render_template("admin_products.html", products=products, category=category.lower())
 
-@admin.route('/products/<category_name>/<id>/<action>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@admin.route('/products/<category>/<id>/<action>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @login_required
 @manage_required
 
-def action_cate_products(category_name, id, action):
-    cate_service = CategoryService(db=db)
-    category = cate_service.find_cate_by_name(category_name=category_name)
-    if action.lower() == 'edit':
-        pass
-    if action.lower() == 'delete':
-        pass
-    return url_for("admin.list_cate_products", category=category_name.title())
+def action_cate_products(category, id, action):
+    product_service = ProductService(db)
+    if id and action.lower() == 'delete':
+        if request.method == 'POST':
+            product = product_service.delete(id=id)
+            if product:
+                product_img_name = product.slug + '.jpg'
+                os.remove(os.path.join('app/static/products/', product_img_name))
+                flash(u'Delete product successfully', 'success')
+                return redirect(url_for('admin.list_cate_products', category=category))
+            abort(404)
+        else:
+            abort(404)
+    if id and action.lower() == 'edit':
+        product = product_service.find_product_by_id(product_id=id)
+        if product:
+            if request.method == 'POST':
+                name = request.form['name']
+                category_id = request.form['category']
+                price = request.form['price']
+                quantity = request.form['quantity']
+                info = request.form['info']
+                sale = request.form['sale']
+                if sale == '':
+                    sale = 0
+                pro = product_service.change_product(product_id=product.id, name=name, category_id=category_id,
+                                                     price=price,
+                                                     quantity=quantity, info=info, sale=sale)
+                if pro:
+                    if 'file_image' in request.files and request.files['file_image'].filename != '':
+                        image = request.files['file_image']
+                        if image and allowed_file(image.filename):
+                            product_img_name = product.slug + '.jpg'
+                            image.save(os.path.join('app/static/products/', product_img_name))
+                            # image.save(os.path.join(url_for('static', filename='products/'), product_img_name))
+                            flash(u'Update product successfully', 'success')
+                            return redirect(url_for('admin.list_cate_products', category=category))
+
+                    flash(u'Update product success', 'success')
+                    return redirect(url_for('admin.list_cate_products', category=category))
+                else:
+                    return render_template("edit_product.html", product=product, error='Error product name or some field please update again')
+            else:
+                return render_template("edit_product.html", product=product)
+        else:
+            abort(404)
+
+    abort(404)

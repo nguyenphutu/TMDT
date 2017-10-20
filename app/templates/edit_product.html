@@ -14,7 +14,7 @@
     <div class="card card-register mx-auto mt-5">
       <div class="card-header">{{ page }}</div>
       <div class="card-body">
-        <form action="{{ url_for('admin.action_product', id=product.id, action='edit') }}" method="POST" enctype="multipart/form-data">
+        <form action="" method="POST" enctype="multipart/form-data">
           <div class="form-group">
               <div class="form-row">
                   <div class="col-md-6">
@@ -52,7 +52,7 @@
                 <label for="category">Category</label>
                 <select name="category" id="category" class="form-control">
                   <option value=''>Select category</option>
-                  {% for cate in categorys %}
+                  {% for cate in categories %}
                   <option value={{cate.id}} {% if product.category_id == cate.id %} selected {% endif %}>{{cate.name}}</option>
                   {% endfor %}
                 </select>
