@@ -137,16 +137,16 @@
                     <div class="col-md-3 w3l_fresh_vegetables_grid w3l_fresh_vegetables_grid_left">
                         <div class="w3l_fresh_vegetables_grid2">
                             <ul>
-                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="#">All Brands</a></li>
-                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="#">Vegetables</a></li>
-                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="#">Fruits</a></li>
-                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="#">Juices</a></li>
-                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="#">Pet Food</a></li>
-                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="#">Bread & Bakery</a></li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="{{ url_for('products.products') }}">All Brands</a></li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="{{ url_for('products.product_of_cate' , category='Vegetables') }}">Vegetables</a></li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="{{ url_for('products.product_of_cate' , category='Fruits') }}">Fruits</a></li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="{{ url_for('products.product_of_cate' , category='Juices') }}">Juices</a></li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="{{ url_for('products.product_of_cate' , category='Pet Food') }}">Pet Food</a></li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="{{ url_for('products.product_of_cate' , category='Bread') }}">Bread & Bakery</a></li>
                                 <li><i class="fa fa-check" aria-hidden="true"></i><a href="#">Cleaning</a></li>
-                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="#">Spices</a></li>
-                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="#">Dry Fruits</a></li>
-                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="#">Dairy Products</a></li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="{{ url_for('products.product_of_cate' , category='Spices') }}">Spices</a></li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="{{ url_for('products.product_of_cate' , category='Vegetables') }}">Dry Fruits</a></li>
+                                <li><i class="fa fa-check" aria-hidden="true"></i><a href="{{ url_for('products.product_of_cate' , category='Vegetables') }}">Dairy Products</a></li>
                             </ul>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                                     <img src="{{ url_for('static', filename = 'images/7.jpg') }}" alt=" " class="img-responsive" />
                                     <div class="w3l_fresh_vegetables_grid1_rel_pos">
                                         <div class="more m1">
-                                            <a href="#" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
+                                            <a href="{{ url_for('products.products') }}" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
                                         </div>
                                     </div>
                                 </div>
