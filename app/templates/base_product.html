@@ -17,16 +17,22 @@
                 <div class="col-md-3 w3ls_w3l_banner_left {% if no_index==1 %}w3ls_w3l_banner_left_asdfdfd{% elif no_index % 3 == 0 %}w3ls_w3l_banner_left_asd{% endif %}">
 					<div class="hover14 column">
 					<div class="agile_top_brand_left_grid w3l_agile_top_brand_left_grid">
+						{% if product.sale is not none and product.sale|int > 0 %}
 						<div class="agile_top_brand_left_grid_pos">
 							<img src="{{ url_for('static', filename = 'images/offer.png') }}" alt=" " class="img-responsive" />
 						</div>
+						{% endif %}
 						<div class="agile_top_brand_left_grid1">
 							<figure>
 								<div class="snipcart-item block">
 									<div class="snipcart-thumb">
 										<a href="{{ url_for('products.product_detail', id=product.id) }}"><img src="{{ url_for('static', filename = 'products/' + product.slug + '.jpg') }}" alt=" " class="img-responsive" /></a>
 										<p>{{ product.name }}</p>
-										<h4>$4.00 <span>${{ product.price }}</span></h4>
+                                        {% if product.sale is not none and product.sale|int > 0 %}
+										<h4>${{ (product.price - (product.price*product.sale)/100)|round(2) }} <span>${{ product.price }}</span></h4>
+                                        {% else %}
+										<h4>${{ product.price }}</h4>
+                                        {% endif %}
 									</div>
 									<div class="snipcart-details">
 										<form action="#" method="post">

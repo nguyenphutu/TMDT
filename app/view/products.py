@@ -29,6 +29,7 @@ def product_detail(id):
     product_service = ProductService(db)
     product = product_service.find_product_by_id(product_id=id)
     if product:
+        print(product.sale is not None and product.sale > 0)
         return render_template("single.html", product=product)
     abort(404)
 

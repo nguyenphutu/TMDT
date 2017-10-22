@@ -8,7 +8,6 @@ from app.service.category import CategoryService
 from app.service.products import ProductService
 from .scripts import admin_required, manage_required
 import os
-import time
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -32,8 +31,7 @@ def dashboard():
 
 @admin.route('/account', methods=['GET','POST'])
 @login_required
-# @admin_required
-@manage_required
+@admin_required
 def list_accounts():
     u_service = UserService(db)
     accounts = u_service.all()

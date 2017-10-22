@@ -65,16 +65,22 @@
 					<div class="col-md-3 w3ls_w3l_banner_left">
 						<div class="hover14 column">
 						<div class="agile_top_brand_left_grid w3l_agile_top_brand_left_grid">
+							{% if food.sale is not none and food.sale|int > 0 %}
 							<div class="agile_top_brand_left_grid_pos">
 								<img src="{{ url_for('static', filename = 'images/offer.png') }}" alt=" " class="img-responsive" />
 							</div>
+							{% endif %}
 							<div class="agile_top_brand_left_grid1">
 								<figure>
 									<div class="snipcart-item block">
 										<div class="snipcart-thumb">
 											<a href="{{ url_for('products.product_detail', id=food.id) }}"><img src="{{ url_for('static', filename = 'products/' + food.slug + '.jpg') }}" alt=" " class="img-responsive" /></a>
 											<p>{{ food.name }}</p>
-											<h4>$3.00 <span>${{food.price}}</span></h4>
+											{% if food.sale is not none and food.sale|int > 0 %}
+											<h4>${{ (food.price - (food.price*food.sale)/100)|round(2) }} <span>${{ food.price }}</span></h4>
+											{% else %}
+											<h4>${{ food.price }}</h4>
+											{% endif %}
 										</div>
 										<div class="snipcart-details">
 											<form action="#" method="post">
@@ -107,16 +113,22 @@
 					<div class="col-md-3 w3ls_w3l_banner_left">
 						<div class="hover14 column">
 						<div class="agile_top_brand_left_grid w3l_agile_top_brand_left_grid">
+							{% if vegetable.sale is not none and vegetable.sale|int > 0 %}
 							<div class="agile_top_brand_left_grid_pos">
 								<img src="{{ url_for('static', filename = 'images/offer.png') }}" alt=" " class="img-responsive" />
 							</div>
+							{% endif %}
 							<div class="agile_top_brand_left_grid1">
 								<figure>
 									<div class="snipcart-item block">
 										<div class="snipcart-thumb">
 											<a href="{{ url_for('products.product_detail', id=vegetable.id) }}"><img src="{{ url_for('static', filename = 'products/' + vegetable.slug + '.jpg') }}" alt=" " class="img-responsive" /></a>
 											<p>{{ vegetable.name }}</p>
-											<h4>$3.00 <span>${{vegetable.price}}</span></h4>
+											{% if vegetable.sale is not none and vegetable.sale|int > 0 %}
+											<h4>${{ (vegetable.price - (vegetable.price*vegetable.sale)/100)|round(2) }} <span>${{ vegetable.price }}</span></h4>
+											{% else %}
+											<h4>${{ vegetable.price }}</h4>
+											{% endif %}
 										</div>
 										<div class="snipcart-details">
 											<form action="#" method="post">
@@ -149,16 +161,22 @@
 					<div class="col-md-3 w3ls_w3l_banner_left">
 						<div class="hover14 column">
 						<div class="agile_top_brand_left_grid w3l_agile_top_brand_left_grid">
+							{% if juice.sale is not none and juice.sale|int > 0 %}
 							<div class="agile_top_brand_left_grid_pos">
 								<img src="{{ url_for('static', filename = 'images/offer.png') }}" alt=" " class="img-responsive" />
 							</div>
+							{% endif %}
 							<div class="agile_top_brand_left_grid1">
 								<figure>
 									<div class="snipcart-item block">
 										<div class="snipcart-thumb">
 											<a href="{{ url_for('products.product_detail', id=juice.id) }}"><img src="{{ url_for('static', filename = 'products/' + juice.slug + '.jpg') }}" alt=" " class="img-responsive" /></a>
 											<p>{{ juice.name }}</p>
-											<h4>$3.00 <span>${{juice.price}}</span></h4>
+											{% if juice.sale is not none and juice.sale|int > 0 %}
+											<h4>${{ (juice.price - (juice.price*juice.sale)/100)|round(2) }} <span>${{ juice.price }}</span></h4>
+											{% else %}
+											<h4>${{ juice.price }}</h4>
+											{% endif %}
 										</div>
 										<div class="snipcart-details">
 											<form action="#" method="post">

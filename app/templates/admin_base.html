@@ -32,12 +32,14 @@
             <span class="nav-link-text">Dashboard</span>
           </a>
         </li>
+        {% if current_user.role == '2' %}
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="{{ url_for('admin.list_accounts') }}">
             <i class="fa fa-user" aria-hidden="true"></i>
             <span class="nav-link-text">Accounts</span>
           </a>
         </li>
+        {% endif %}
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="{{ url_for('admin.list_category') }}">
             <i class="fa fa-tasks" aria-hidden="true"></i>

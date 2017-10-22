@@ -11,8 +11,11 @@ Start a PostgreSQL or Mysql server::
 
   make db
   
-Migrate database:
+Migrate database if you change db:
  flask db migrate
+and upgrade with new change
+ flassk db upgrade
+
 
 Start the server::
 
