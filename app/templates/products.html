@@ -83,17 +83,11 @@
 											{% endif %}
 										</div>
 										<div class="snipcart-details">
-											<form action="#" method="post">
+											<form action="{{ url_for('order.create_order') }}" method="post">
 												<fieldset>
-													<input type="hidden" name="cmd" value="_cart" />
-													<input type="hidden" name="add" value="1" />
-													<input type="hidden" name="business" value=" " />
-													<input type="hidden" name="item_name" value="{{food.name}}" />
-													<input type="hidden" name="amount" value="{{food.price}}" />
-													<input type="hidden" name="discount_amount" value="{{food.sale}}" />
-													<input type="hidden" name="currency_code" value="USD" />
-													<input type="hidden" name="return" value=" " />
-													<input type="hidden" name="cancel_return" value=" " />
+													<input type="hidden" name="product_name" value="{{ food.name }}" />
+													<input type="hidden" name="product_id" value="{{ food.id }}" />
+													<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 													<input type="submit" name="submit" value="Add to cart" class="button" />
 												</fieldset>
 											</form>
@@ -131,17 +125,11 @@
 											{% endif %}
 										</div>
 										<div class="snipcart-details">
-											<form action="#" method="post">
+											<form action="{{ url_for('order.create_order') }}" method="post">
 												<fieldset>
-													<input type="hidden" name="cmd" value="_cart" />
-													<input type="hidden" name="add" value="1" />
-													<input type="hidden" name="business" value=" " />
-													<input type="hidden" name="item_name" value="{{vegetable.name}}" />
-													<input type="hidden" name="amount" value="{{vegetable.price}}" />
-													<input type="hidden" name="discount_amount" value="{{vegetable.sale}}" />
-													<input type="hidden" name="currency_code" value="USD" />
-													<input type="hidden" name="return" value=" " />
-													<input type="hidden" name="cancel_return" value=" " />
+													<input type="hidden" name="product_name" value="{{ vegetable.name }}" />
+													<input type="hidden" name="product_id" value="{{ vegetable.id }}" />
+													<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 													<input type="submit" name="submit" value="Add to cart" class="button" />
 												</fieldset>
 											</form>
@@ -179,17 +167,11 @@
 											{% endif %}
 										</div>
 										<div class="snipcart-details">
-											<form action="#" method="post">
+											<form action="{{ url_for('order.create_order') }}" method="post">
 												<fieldset>
-													<input type="hidden" name="cmd" value="_cart" />
-													<input type="hidden" name="add" value="1" />
-													<input type="hidden" name="business" value=" " />
-													<input type="hidden" name="item_name" value="{{juice.name}}" />
-													<input type="hidden" name="amount" value="{{juice.price}}" />
-													<input type="hidden" name="discount_amount" value="{{juice.sale}}" />
-													<input type="hidden" name="currency_code" value="USD" />
-													<input type="hidden" name="return" value=" " />
-													<input type="hidden" name="cancel_return" value=" " />
+													<input type="hidden" name="product_name" value="{{ juice.name }}" />
+													<input type="hidden" name="product_id" value="{{ juice.id }}" />
+													<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 													<input type="submit" name="submit" value="Add to cart" class="button" />
 												</fieldset>
 											</form>

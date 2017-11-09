@@ -1,6 +1,7 @@
 from app.model.product import Product
 from app.model.category import Category
 import uuid
+import sqlalchemy as sa
 
 class ProductService():
     def __init__(self, db):
@@ -34,7 +35,7 @@ class ProductService():
             category = Category.query.filter_by(id=category_id).first()
             product.name = name
             product.info = info
-            product.quantity = product.quantity + int(quantity)
+            product.quantity = quantity
             product.price = price
             product.sale = sale
             product.category_id = category_id
@@ -82,3 +83,21 @@ class ProductService():
         product = Product.query.filter(Product.sale > 0).order_by(Product.sale.desc())
         return product
 
+    def get_product_older(self):
+        products = Product.query.filter(Product.quantity < 10).order_by(Product.date_created.desc()).all()
+        return products
+
+    def search(self, text):
+        products = (Product.query.filter(Product.name.like("%" + text + "%"))).order_by(Product.sale.desc()).all()
+
+        if products != []:
+            return products
+        else:
+            products = (Product.query.filter(sa.or_(*[Product.name.like("%" + value + "%") for value in text.split(' ')])))\
+                .order_by(Product.sale.desc()).all()
+            return products
+
+    # def search(self, text):
+    #     products = Product.query.whoosh_search(" OR ".join([value for value in text.split(' ')]))\
+    #         .all()
+    #     return products

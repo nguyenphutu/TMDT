@@ -8,7 +8,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 # Define the database - we are working with
 # SQLite for this example
 # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
-SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:123456@localhost:5432/market?connect_timeout=5'
+SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:123456@localhost:5432/baocao?connect_timeout=5'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 DATABASE_CONNECT_OPTIONS = {}
@@ -31,4 +31,7 @@ SECRET_KEY = "secret"
 WTF_CSRF_SECRET_KEY = 'secret'
 
 UPLOAD_FOLDER = 'app/static/products'
+
+# search
+WHOOSH_BASE = os.path.join(BASE_DIR, 'search.db')
 

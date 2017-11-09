@@ -25,8 +25,9 @@ def dashboard():
     p_service = ProductService(db)
     n_accounts = len(u_service.all())
     n_products = len(p_service.all())
+    n_old_products = len(p_service.get_product_older())
 
-    return render_template("dashboard.html", n_accounts=n_accounts, n_products=n_products)
+    return render_template("dashboard.html", n_accounts=n_accounts, n_products=n_products, n_old_products=n_old_products)
 
 
 @admin.route('/account', methods=['GET','POST'])

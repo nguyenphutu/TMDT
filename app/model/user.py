@@ -86,8 +86,8 @@ class User_Detail(Base):
     ward = db.Column(db.Text,  nullable=False)
     address = db.Column(db.Text,  nullable=False)
     phone = db.Column(db.String(20),  nullable=False)
-    date_of_birth = db.Column(db.DateTime,  nullable=False)
-    gender = db.Column(UserGender.enum, nullable=False)
+    date_of_birth = db.Column(db.DateTime,  nullable=True)
+    gender = db.Column(UserGender.enum, nullable=True)
 
     def __repr__(self):
         return '<User %r>' % (self.user)

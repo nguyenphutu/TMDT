@@ -2,7 +2,7 @@ from app import db
 from app.model.base import Base
 
 class Category(Base):
-    __tablename__ = 'categorys'
+    __tablename__ = 'categories'
     name = db.Column(db.String(255),  nullable=False, unique=True)
     url = db.Column(db.String(255),  nullable=False)
 

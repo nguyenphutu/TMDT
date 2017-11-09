@@ -6,12 +6,21 @@
 {% endblock %}
 {% block right_banner %}
     <div class="w3l_banner_nav_right">
-<!-- about -->
+    {% with success = get_flashed_messages(category_filter=["success"]) %}
+    {% if success %}
+        <div class="alert alert-block alert-success">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="fa fa-times"></i>
+            </button>
+            <strong>Success!</strong> {{success[0]}}
+        </div>
+    {% endif %}
+    {% endwith %}
 		<div class="privacy about">
 			<h3>Chec<span>kout</span></h3>
 
 	      <div class="checkout-right">
-					<h4>Your shopping cart contains: <span>3 Products</span></h4>
+					<h4>Your shopping cart contains: <span>{{ orders|length }} Products</span></h4>
 				<table class="timetable_sub">
 					<thead>
 						<tr>
@@ -24,72 +33,32 @@
 							<th>Remove</th>
 						</tr>
 					</thead>
-					<tbody><tr class="rem1">
-						<td class="invert">1</td>
-						<td class="invert-image"><a href="single.html"><img src="{{ url_for('static', filename = 'images/1.png') }}" alt=" " class="img-responsive"></a></td>
+					<tbody>
+                    {% for order in orders %}
+                    {% set no_index = loop.index  %}
+                    <tr class="rem1">
+						<td class="invert">{{no_index}}</td>
+						<td class="invert-image"><a href="single.html"><img src="{{ url_for('static', filename='products/' + order.product.slug + '.jpg') }}?time={{get_time}}" alt=" " class="img-responsive"></a></td>
 						<td class="invert">
 							 <div class="quantity">
 								<div class="quantity-select">
-									<div class="entry value-minus">&nbsp;</div>
-									<div class="entry value"><span>1</span></div>
-									<div class="entry value-plus active">&nbsp;</div>
+									<div data-id="{{ order.id }}" class="entry value-minus">&nbsp;</div>
+									<div class="entry value"><span id="quantity-{{ order.id }}">{{ order.quantity }}</span></div>
+									<div data-id="{{ order.id }}" class="entry value-plus active">&nbsp;</div>
 								</div>
 							</div>
 						</td>
-						<td class="invert">Fortune Sunflower Oil</td>
+						<td class="invert">{{ order.product.name }}</td>
 
-						<td class="invert">$290.00</td>
+						<td class="invert invert-price" id="price-{{ order.id }}">{{ order.price*order.quantity }}</td>
 						<td class="invert">
-							<div class="rem">
-								<div class="close1"> </div>
+							<div class="remove">
+								<div class="btn-delete-order" id="delete-{{ order.id }}" data-toggle="modal" data-target="#delete-product" data-id="{{url_for('order.delete', id=order.id)}}"> </div>
+                                <div class="save-change" id="change-{{ order.id }}" data-toggle="modal" data-target="#save-change-product" data-id="{{url_for('order.save_change', id=order.id)}}" data-value="{{ order.quantity }}"><span>Save</span></div>
 							</div>
-
 						</td>
 					</tr>
-					<tr class="rem2">
-						<td class="invert">2</td>
-						<td class="invert-image"><a href="single.html"><img src="{{ url_for('static', filename = 'images/3.png') }}" alt=" " class="img-responsive"></a></td>
-						<td class="invert">
-							 <div class="quantity">
-								<div class="quantity-select">
-									<div class="entry value-minus">&nbsp;</div>
-									<div class="entry value"><span>1</span></div>
-									<div class="entry value-plus active">&nbsp;</div>
-								</div>
-							</div>
-						</td>
-						<td class="invert">Basmati Rise (5 Kg)</td>
-
-						<td class="invert">$250.00</td>
-						<td class="invert">
-							<div class="rem">
-								<div class="close2"> </div>
-							</div>
-
-						</td>
-					</tr>
-					<tr class="rem3">
-						<td class="invert">3</td>
-						<td class="invert-image"><a href="single.html"><img src="{{ url_for('static', filename = 'images/2.png') }}" alt=" " class="img-responsive"></a></td>
-						<td class="invert">
-							 <div class="quantity">
-								<div class="quantity-select">
-									<div class="entry value-minus">&nbsp;</div>
-									<div class="entry value"><span>1</span></div>
-									<div class="entry value-plus active">&nbsp;</div>
-								</div>
-							</div>
-						</td>
-						<td class="invert">Pepsi Soft Drink (2 Ltr)</td>
-
-						<td class="invert">$15.00</td>
-						<td class="invert">
-							<div class="rem">
-								<div class="close3"> </div>
-							</div>
-
-						</td>
-					</tr>
+                    {% endfor %}
 
 				</tbody></table>
 			</div>
@@ -97,11 +66,11 @@
 				<div class="col-md-4 checkout-left-basket">
 					<h4>Continue to basket</h4>
 					<ul>
-						<li>Product1 <i>-</i> <span>$15.00 </span></li>
-						<li>Product2 <i>-</i> <span>$25.00 </span></li>
-						<li>Product3 <i>-</i> <span>$29.00 </span></li>
-						<li>Total Service Charges <i>-</i> <span>$15.00</span></li>
-						<li>Total <i>-</i> <span>$84.00</span></li>
+                        {% for order in orders %}
+                        {% set no_index = loop.index  %}
+						<li>{{order.product.name|title}} <i>-</i> <span>${{order.price*order.quantity}} </span></li>
+                        {% endfor %}
+                        <li>Total <i>-</i> <span>${{ calculate_total_payment() }}</span></li>
 					</ul>
 				</div>
 				<div class="col-md-8 address_form_agile">
@@ -112,42 +81,40 @@
 											<div class="first-row form-group">
 												<div class="controls">
 													<label class="control-label">Full name: </label>
-													<input class="billing-address-name form-control" type="text" name="name" placeholder="Full name">
+													<input class="billing-address-name form-control" type="text" name="name" placeholder="Nguyen Phu Tu">
 												</div>
-												<div class="w3_agileits_card_number_grids">
-													<div class="w3_agileits_card_number_grid_left">
-														<div class="controls">
-															<label class="control-label">Mobile number:</label>
-														    <input class="form-control" type="text" placeholder="Mobile number">
-														</div>
-													</div>
-													<div class="w3_agileits_card_number_grid_right">
-														<div class="controls">
-															<label class="control-label">Landmark: </label>
-														 <input class="form-control" type="text" placeholder="Landmark">
-														</div>
-													</div>
-													<div class="clear"> </div>
+												<div class="controls">
+													<label class="control-label">Mobile number: </label>
+												 <input class="form-control" type="text" placeholder="01682617464">
 												</div>
 												<div class="controls">
 													<label class="control-label">Town/City: </label>
-												 <input class="form-control" type="text" placeholder="Town/City">
+												 <input class="form-control" type="text" placeholder="Ha Noi">
 												</div>
-													<div class="controls">
-															<label class="control-label">Address type: </label>
-												     <select class="form-control option-w3ls">
-                                                            <option>Office</option>
-                                                            <option>Home</option>
-                                                            <option>Commercial</option>
-                                                    </select>
-													</div>
+                                                <div class="controls">
+													<label class="control-label">District: </label>
+												 <input class="form-control" type="text" placeholder="Gia Lam">
+												</div>
+                                                <div class="controls">
+													<label class="control-label">Ward: </label>
+												 <input class="form-control" type="text" placeholder="Thi Tran Trau Quy">
+												</div>
+                                                <div class="controls">
+                                                    <label class="control-label">Address: </label>
+                                                    <!--<select class="form-control option-w3ls">-->
+                                                        <!--<option>Office</option>-->
+                                                        <!--<option>Home</option>-->
+                                                        <!--<option>Commercial</option>-->
+                                                    <!--</select>-->
+                                                    <input class="form-control" type="text" placeholder="52 dao nguyen A">
+                                                </div>
 											</div>
 											<button class="submit check_out">Delivery to this Address</button>
 										</div>
 									</section>
 								</form>
 									<div class="checkout-right-basket">
-				        	<a href="payment.html">Make a Payment <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+				        	<a href="{{ url_for('products.payment') }}">Make a Payment <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
 			      	</div>
 					</div>
 
@@ -158,6 +125,50 @@
 		</div>
 <!-- //about -->
     </div>
+
+<!--delete modal-->
+<div class="modal fade" id="delete-product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ready to Delete?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Select "Delete" below if you are ready to delete this product.</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" style="float: left;" type="button" data-dismiss="modal">Cancel</button>
+        <form id="delete-user-form" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--save-change-product modal-->
+<div class="modal fade" id="save-change-product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ready to Save?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Select "Save" below if you are ready to save change this product.</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" style="float: left;" type="button" data-dismiss="modal">Cancel</button>
+        <form id="update-product" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input type="hidden" name="quality"/>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -165,41 +176,5 @@
 {% endblock %}
 
 {% block end_scripts %}
-<!--quantity-->
-        <script>
-        $('.value-plus').on('click', function(){
-            var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)+1;
-            divUpd.text(newVal);
-        });
-
-        $('.value-minus').on('click', function(){
-            var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)-1;
-            if(newVal>=1) divUpd.text(newVal);
-        });
-        </script>
-<!--quantity-->
-<script>$(document).ready(function(c) {
-    $('.close1').on('click', function(c){
-        $('.rem1').fadeOut('slow', function(c){
-            $('.rem1').remove();
-        });
-        });
-    });
-</script>
-<script>$(document).ready(function(c) {
-    $('.close2').on('click', function(c){
-        $('.rem2').fadeOut('slow', function(c){
-            $('.rem2').remove();
-        });
-        });
-    });
-</script>
-<script>$(document).ready(function(c) {
-    $('.close3').on('click', function(c){
-        $('.rem3').fadeOut('slow', function(c){
-            $('.rem3').remove();
-        });
-        });
-    });
-</script>
+<script type='text/javascript' src="{{ url_for('static', filename = 'js/order.js') }}"></script>
 {% endblock end_scripts %}
