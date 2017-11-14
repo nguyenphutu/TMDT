@@ -6,6 +6,7 @@ from flask_login import login_required, login_user, current_user, logout_user
 from app.model.user import User
 from app.service.category import CategoryService
 from app.service.products import ProductService
+from app.service.orders import OrderService
 from .scripts import admin_required, manage_required
 import os
 
@@ -26,8 +27,9 @@ def dashboard():
     n_accounts = len(u_service.all())
     n_products = len(p_service.all())
     n_old_products = len(p_service.get_product_older())
-
-    return render_template("dashboard.html", n_accounts=n_accounts, n_products=n_products, n_old_products=n_old_products)
+    order_service = OrderService(db)
+    n_orders = len(order_service.all())
+    return render_template("dashboard.html", n_accounts=n_accounts, n_products=n_products, n_old_products=n_old_products, n_orders=n_orders)
 
 
 @admin.route('/account', methods=['GET','POST'])
@@ -304,6 +306,54 @@ def action_cates(id, action):
                     return render_template("edit_cate.html", cate=cate, error='Error email or some field please update again')
             else:
                 return render_template("edit_cate.html", cate = cate)
+        else:
+            abort(404)
+
+    abort(404)
+
+@admin.route('/orders', methods=['GET'])
+@login_required
+@manage_required
+def list_order():
+    order_service = OrderService(db)
+    orders = order_service.all()
+    return render_template("admin_orders.html", orders=orders)
+
+@admin.route('/orders/new', methods=['GET'])
+@login_required
+@manage_required
+def list_order_news():
+    order_service = OrderService(db)
+    orders = order_service.get_new_order()
+    return render_template("admin_orders.html", orders=orders)
+
+@admin.route('/order/<id>/<action>', methods=['GET', 'POST'])
+@login_required
+@manage_required
+def action_orders(id, action):
+    order_service = OrderService(db)
+    if id and action.lower() == 'delete':
+        if request.method == 'POST':
+            order = order_service.delete_order(order_id=id)
+            if order:
+                flash(u'Delete order successfully', 'success')
+                return redirect(url_for('admin.list_order'))
+            abort(404)
+        else:
+            abort(404)
+    if id and action.lower() == 'edit':
+        order = order_service.find_order_by_id(order_id=id)
+        if order:
+            if request.method == 'POST':
+                status = request.form['status']
+                new_order = order_service.update_order(order_id=order.id, status=status)
+                if new_order:
+                    flash(u'Update order successfully', 'success')
+                    return redirect(url_for('admin.list_order'))
+                else:
+                    return render_template("edit_order.html", order=order, error='Error some field please update again')
+            else:
+                return render_template("edit_order.html", order=order)
         else:
             abort(404)
 

@@ -27,5 +27,12 @@ class CreateAccount(Form):
     role = StringField('Role', [validators.Length(min=1, max=10)])
     password = PasswordField('New Password', [[validators.Length(min=6, max=35)]])
 
+class CheckoutForm(Form):
+    fullname = StringField('Full Name', [validators.Length(min=4, max=255)])
+    city = StringField('City', [validators.Length(min=2, max=255)])
+    district = StringField('District', [validators.Length(min=2, max=255)])
+    ward = StringField('Ward', [validators.Length(min=2, max=255)])
+    address = StringField('Address', [validators.Length(min=2, max=255)])
+    phone = StringField('Phone', [validators.Length(min=9, max=12)])
 class ForgotForm(Form):
     email = StringField('Email Address', [validators.Length(min=6, max=35)])

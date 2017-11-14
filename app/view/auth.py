@@ -1,12 +1,15 @@
-from flask import render_template, Blueprint, request, redirect, url_for, g
+from flask import render_template, Blueprint, request, redirect, url_for, g, session
 from app import db, login_manager
 from app.service.user import UserService, UserDetailService
 from app.form import LoginForm, RegistrationForm, ForgotForm
 from flask_login import login_required, login_user, current_user, logout_user, UserMixin
 from app.model.user import User
+from app.service.products import ProductService
+from app.service.orders import OrderTempService
 
 auth = Blueprint('auth', __name__, url_prefix='/auth')
-
+product_service = ProductService(db)
+order_temp_service = OrderTempService(db)
 # # Sample user
 # class _User(UserMixin):
 #     pass
@@ -59,6 +62,14 @@ def login():
             user.status = '1'
             db.session.commit()
             login_user(user=user, remember=True)
+            if 'orders_temps' in session:
+                for pro_id, quantity in session['orders_temps'].items():
+                    product = product_service.find_product_by_id(pro_id)
+                    price = product.price - round((product.price * product.sale) / 100, 2)
+                    order = order_temp_service.create_order_temp(user_id=user.id, product_id=pro_id,
+                                                                 quantity=quantity, price=price)
+                session.pop('orders_temps', None)
+                return redirect(url_for('products.checkout'))
             return redirect(url_for('web.homepage'))
         else:
             error = 'Invalid username/password'

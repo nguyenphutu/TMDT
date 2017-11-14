@@ -78,37 +78,35 @@ class UserDetailService():
     def __init__(self, db):
         self.db = db
 
-    def create_user_detail(self, city, district, ward, address, phone, date_of_birth, gender, user_id, user ):
+    def create_user_detail(self, fullname, city, district, ward, address, phone, user_id):
         user_detail = User_Detail()
+        user_detail.fullname = fullname
         user_detail.city = city
         user_detail.district = district
         user_detail.ward = ward
         user_detail.address = address
         user_detail.phone = phone
-        user_detail.date_of_birth = date_of_birth
-        user_detail.gender = gender
         user_detail.user_id = user_id
-        user_detail.user = user
+        user_detail.user = User.query.filter_by(id=user_id).first()
 
         try:
-            self.db.add(user_detail)
-            self.db.commit()
+            self.db.session.add(user_detail)
+            self.db.session.commit()
             return user_detail
         except Exception as e:
             return 'Error, add user detail have some error'
 
 
-    def update_user_detail(self, user_id, city, district, ward, address, phone, date_of_birth, gender):
-        user_detail = User.query.filter_by(id=user_id).first().user_detail
+    def update_user_detail(self, user_id, fullname, city, district, ward, address, phone):
+        user_detail = User.query.filter_by(id=user_id).first().user_detail[0]
         if user_detail:
+            user_detail.fullname = fullname
             user_detail.city = city
             user_detail.district = district
             user_detail.ward = ward
             user_detail.address = address
             user_detail.phone = phone
-            user_detail.date_of_birth = date_of_birth
-            user_detail.gender = gender
 
-            self.db.commit()
+            self.db.session.commit()
         else:
             return 'Error, no user or update have some error'

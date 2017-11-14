@@ -38,17 +38,11 @@
 							<h4>${{ product.price }} <span>${{ product.price }}</span></h4>
 						</div>
 						<div class="snipcart-details agileinfo_single_right_details">
-							<form action="#" method="post">
+							<form action="{{ url_for('order.create_order') }}" method="post">
 								<fieldset>
-									<input type="hidden" name="cmd" value="_cart" />
-									<input type="hidden" name="add" value="1" />
-									<input type="hidden" name="business" value=" " />
-									<input type="hidden" name="item_name" value="{{ product.name }}" />
-									<input type="hidden" name="amount" value="{{ product.price }}" />
-									<input type="hidden" name="discount_amount" value="{{ product.sale }}" />
-									<input type="hidden" name="currency_code" value="USD" />
-									<input type="hidden" name="return" value=" " />
-									<input type="hidden" name="cancel_return" value=" " />
+									<input type="hidden" name="product_name" value="{{ product.name }}" />
+									<input type="hidden" name="product_id" value="{{ product.id }}" />
+									<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 									<input type="submit" name="submit" value="Add to cart" class="button" />
 								</fieldset>
 							</form>

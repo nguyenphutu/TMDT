@@ -2548,14 +2548,21 @@ td.invert-image a img {
 }
 /*-- quantity-end --*/
 .checkout-left-basket h4{
-	padding: 1em;
     background: #84c639;
+    padding: 1em;
     font-size: 1.1em;
     color: #fff;
     text-transform: uppercase;
     text-align: center;
     margin: 0 0 1em;
+
 }
+.checkout-left-basket h4 a{
+    padding: 1em;
+    color: #fff;
+    text-decoration: none;
+}
+
 .checkout-left {
     margin: 2em 0 0;
 }

@@ -78,9 +78,9 @@
           <div class="card-body-icon">
             <i class="fa fa-tasks" aria-hidden="true"></i>
           </div>
-          <div class="mr-5">{{categories()|length}} New Orders!</div>
+          <div class="mr-5">{{ n_orders }} New Orders!</div>
         </div>
-        <a class="card-footer text-white clearfix small z-1" href="{{ url_for('admin.list_products') }}">
+        <a class="card-footer text-white clearfix small z-1" href="{{ url_for('admin.list_order_news') }}">
           <span class="float-left">View Details</span>
           <span class="float-right">
             <i class="fa fa-angle-right"></i>

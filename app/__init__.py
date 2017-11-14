@@ -3,15 +3,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_wkhtmltopdf import Wkhtmltopdf
+from flask_mail import Mail
 
 # Define the WSGI application object
 # app = Flask(__name__, static_url_path='/static')
 csrf = CSRFProtect()
 app = Flask(__name__)
 csrf.init_app(app)
-
 # Configurations
 app.config.from_object('config')
+
 
 # Define the database object which is imported
 # by modules and controllers
@@ -34,8 +36,9 @@ def after_request(response):
   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
   return response
 
-# # Initial Migration
-# migrate = Migrate(app, db)
+# Mail Initialize
+mail = Mail(app)
+
 
 ###############
 #### login ####
@@ -82,12 +85,13 @@ def get_time():
     import time
     return time.time()
 
-def calculate_total_payment():
-    order_temp_service = OrderTempService(db)
-    orders = order_temp_service.all()
+def calculate_total_payment(orders):
     total = 0
     for order in orders:
-        total += order.price*order.quantity
+        try:
+            total += order.price*order.quantity
+        except Exception as e:
+            total += order['price'] * order['quantity']
     return round(total, 2)
 
 app.jinja_env.globals['categories'] = categories

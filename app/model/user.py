@@ -79,8 +79,9 @@ class User(Base):
 
 class User_Detail(Base):
     __tablename__ = 'user_detail'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', backref='user_detail', lazy=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='cascade'), nullable=False)
+    user = db.relationship('User', backref='user_detail', lazy=True, uselist=False, cascade="all,delete")
+    fullname = db.Column(db.Text,  nullable=False)
     city = db.Column(db.Text,  nullable=False)
     district = db.Column(db.Text,  nullable=False)
     ward = db.Column(db.Text,  nullable=False)

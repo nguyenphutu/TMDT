@@ -394,17 +394,23 @@ footer.sticky-footer {
     line-height: 1.15;
     height: 20px;
 }
-.User, .Inactive{
+.User, .Inactive, .dathang{
     background-color: #F89406;
 }
-.Manage,.Active{
+.Manage,.Active, .huydonhang{
     background-color: #82AF6F;
 }
-.Admin{
+.Admin, .dagiaohang{
     background-color: #4F99C6!important;
 }
-.Never-login{
+.Never-login, .khongguiduoc{
     background-color: #333
+}
+.danhanhang{
+    background-color: #FF4500
+}
+.doitrahang{
+    background-color: #DDA0DD
 }
 .add-user{
     font-size: 12px;
@@ -429,4 +435,12 @@ footer.sticky-footer {
 }
 .product-thumbnail img{
     width 100%;
+}
+
+select.form-control{
+    padding: 0px;
+    padding-left: 5px;
+}
+.order-detail{
+    margin-bottom: 10px;
 }
