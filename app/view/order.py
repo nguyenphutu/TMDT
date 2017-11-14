@@ -34,11 +34,12 @@ def create_order():
                 flash(u'Add product to cart successfully', 'success')
         else:
             if 'orders_temps' not in session:
-                session['orders_temps'] = {product_id: quantity}
+                session['orders_temps'] = {}
+                session['orders_temps'][str(product_id)] = quantity
             else:
                 session['orders_temps'][str(product_id)] = quantity
                 print(session['orders_temps'])
-        return redirect(url_for('products.checkout'), code=302)
+        return redirect(url_for('products.checkout'))
 @order.route('/delete/<id>', methods = ['POST'])
 def delete(id):
     if id:
@@ -48,6 +49,7 @@ def delete(id):
                 flash(u'Delete product successfully', 'success')
         else:
             del session['orders_temps'][id]
+            print(session['orders_temps'])
         return redirect(url_for('products.checkout'))
     abort(404)
 

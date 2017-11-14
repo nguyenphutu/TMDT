@@ -32,6 +32,17 @@ WTF_CSRF_SECRET_KEY = 'secret'
 
 UPLOAD_FOLDER = 'app/static/products'
 
-# search
-WHOOSH_BASE = os.path.join(BASE_DIR, 'search.db')
+##############
+#### smtp ####
+##############
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_PORT = 465
+MAIL_USE_TLS = True
+MAIL_USERNAME = 'nguyentudb1995@gmail.com'
+MAIL_PASSWORD = 'fwqrfqgqkilznrbs'
+MAIL_DEFAULT_SENDER = 'GroceryStore <nguyentudb1995@gmail.com>'
 
+
+#Wkhtmltopdf
+WKHTMLTOPDF_BIN_PATH = 'F:\\Progrram Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
+PDF_DIR_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf')
