@@ -1,0 +1,82 @@
+{% extends "admin_base.html" %}
+{% set page = 'Edit product' %}
+
+{% block content %}
+{% if error %}
+    <div class="alert alert-block alert-warning">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="fa fa-times"></i>
+        </button>
+        <strong>Warning!</strong> {{ error }}
+    </div>
+{% endif %}
+<div class="container">
+    <div class="card card-register mx-auto mt-5">
+      <div class="card-header">{{ page }}</div>
+      <div class="card-body">
+        <form action="" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+              <div class="form-row">
+                  <div class="col-md-6">
+                      <div class="product-thumbnail" id="change-product-img">
+                        <img id="product-image" alt="product-image" src="{{ url_for('static', filename='products/' + product.slug + '.jpg' ) }}"/>
+                      </div>
+                      <input class="form-control input-img-file" type="file" id="image" name="file_image">
+                  </div>
+                  <div class="col-md-6">
+                      <label for="sale">Sale</label>
+                      <select name="sale" id="sale" class="form-control">
+                          {% for sale in range(0,55,5) %}
+                          <option value={{sale}} {% if product.sale == cate %} selected {% endif %}>{{sale}}</option>
+                          {% endfor %}
+                      </select>
+                  </div>
+              </div>
+          </div>
+          <div class="form-group">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="name">Product name</label>
+                <input class="form-control" id="name" type="text" name="name" value="{{ product.name }}">
+              </div>
+              <div class="col-md-6">
+                <label for="quantity">Quantity</label>
+                <select name="quantity" id="quantity" class="form-control">
+                  {% for quantity in range(50,550,50) %}
+                  <option value={{quantity}} {% if product.quantity == quantity %} selected {% endif %}>{{quantity}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="price">Price</label>
+                <input class="form-control" id="price" type="text" name="price" value="{{ product.price }}">
+              </div>
+              <div class="col-md-6">
+                <label for="category">Category</label>
+                <select name="category" id="category" class="form-control">
+                  <option value=''>Select category</option>
+                  {% for cate in categories() %}
+                  <option value={{cate.id}} {% if product.category_id == cate.id %} selected {% endif %}>{{cate.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+              <label for="category">Infomation</label>
+              <textarea style="width: 100%;" name="info">{{ product.info }}</textarea>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='admin/js/scripts.js') }}"></script>
+{% endblock %}

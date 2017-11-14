@@ -1,0 +1,195 @@
+{% extends "admin_base.html" %}
+{% if category %}
+    {% set page = 'Products/' + category|title %}
+{% else %}
+    {% set page = 'Products' %}
+{% endif %}
+
+{% block content %}
+{% if add_status == 'success' %}
+    <div class="alert alert-block alert-success">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="fa fa-times"></i>
+        </button>
+        <strong>Success!</strong> create products successfully.
+    </div>
+{% elif add_status == 'error' %}
+    <div class="alert alert-block alert-warning">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="fa fa-times"></i>
+        </button>
+        <strong>Warning!</strong> Product already exists.
+    </div>
+{% elif add_status == 'warring' %}
+    <div class="alert alert-block alert-warning">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="fa fa-times"></i>
+        </button>
+        <strong>Warning!</strong> Success create product but <strong>No</strong> image uploads.
+    </div>
+{% endif %}
+{% with success = get_flashed_messages(category_filter=["success"]) %}
+{% if success %}
+    <div class="alert alert-block alert-success">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="fa fa-times"></i>
+        </button>
+        <strong>Success!</strong> {{success[0]}}
+    </div>
+{% endif %}
+{% endwith %}
+
+    <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Data Table Products
+          <button type="button" data-toggle="modal" data-target="#add-user" class="btn btn-warning add-user">
+              ADD PRODUCT
+                <span class="icon">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </span>
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>SL No.</th>
+                        <th>Product</th>
+                        <th>Quality</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Sale</th>
+                        <th>Category</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for product in products %}
+                {% set no_index = loop.index  %}
+                <tr class="rem">
+                    <td class="invert">{{ no_index }}</td>
+                    <td class="invert-image"><div class="product-img"><img src="{{ url_for('static', filename='products/' + product.slug + '.jpg') }}?time={{get_time}}" alt=" " class="img-responsive"></div></td>
+                    <td class="invert">{{ product.quantity }}</td>
+
+                    <td class="invert">{{ product.name }}</td>
+                    <td class="invert">{{ product.price|string + '$' }}</td>
+                    <td class="invert">{{ product.sale or '0' }}</td>
+                    <td class="invert">{{ product.category|title }}</td>
+                    <td class="invert">
+                      <a class="fa-icon" href="{%if category %} {{url_for('admin.action_cate_products', category=category, id=product.id, action='edit')}} {% else %} {{url_for('admin.action_product', id=product.id, action='edit')}} {% endif %} ">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </a>
+                      <a class="fa-icon btn-delete-account" data-toggle="modal" data-target="#delete-product" data-id="{%if category %}{{url_for('admin.action_cate_products', category=category, id=product.id, action='delete')}}{% else %}{{url_for('admin.action_product', id=product.id, action='delete')}}{% endif %}">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>SL No.</th>
+                        <th>Product</th>
+                        <th>Quality</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Sale</th>
+                        <th>Category</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+      </div>
+
+<!--Modal add user-->
+<div class="modal fade" id="add-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create new Products</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" id="add-product-form" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="name">Product name</label>
+                <input class="form-control" id="name" type="text" name="name">
+              </div>
+              <div class="col-md-6">
+                <label for="quantity">Quantity</label>
+                <input class="form-control" id="quantity" type="text" name="quantity">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="price">Price</label>
+                <input class="form-control" id="price" type="text" name="price">
+              </div>
+              <div class="col-md-6">
+                <label for="category">Category</label>
+                <select name="category" id="category" class="form-control">
+                  <option value=''>Select category</option>
+                  {% for cate in categories() %}
+                  <option value={{cate.id}} {% if category and cate.name == category %} selected {% endif %}>{{cate|title}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+              <div class="form-row">
+                  <div class="col-md-6">
+                      <label for="image">Image</label>
+                      <input type="file" id="image" name="file_image">
+                  </div>
+              </div>
+          </div>
+          <div class="form-group">
+              <label for="category">Infomation</label>
+              <textarea style="width: 100%;" name="info"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btn-submit">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--delete modal-->
+<div class="modal fade" id="delete-product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ready to Delete?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">Select "Delete" below if you are ready to delete this product.</div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <form id="delete-user-form" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='admin/js/add-product.js') }}"></script>
+{% endblock %}

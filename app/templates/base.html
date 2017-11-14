@@ -2,6 +2,7 @@
 <html>
 <head>
 {% block head_meta %}
+	<meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Gretong Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
@@ -72,8 +73,8 @@
 							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
 								<div class="w3ls_vegetables">
 									<ul>
-										<li><a href="{{ url_for('products.vegetables') }}">Vegetables</a></li>
-										<li><a href="{{ url_for('products.vegetables') }}">Fruits</a></li>
+										<li><a href="{{ url_for('products.product_of_cate', category='Vegetables') }}">Vegetables</a></li>
+										<li><a href="{{ url_for('products.product_of_cate', category='Fruits') }}">Fruits</a></li>
 									</ul>
 								</div>
 							</div>
@@ -83,25 +84,15 @@
 							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
 								<div class="w3ls_vegetables">
 									<ul>
-										<li><a href="{{ url_for('products.drink') }}">Soft Drinks</a></li>
-										<li><a href="{{ url_for('products.drink') }}">Juices</a></li>
+										<li><a href="{{ url_for('products.product_of_cate', category='Soft Drinks') }}">Soft Drinks</a></li>
+										<li><a href="{{ url_for('products.product_of_cate', category='Juices') }}">Juices</a></li>
 									</ul>
 								</div>
 							</div>
 						</li>
-						<li><a href="{{ url_for('products.pet') }}">Pet Food</a></li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Frozen Foods<span class="caret"></span></a>
-							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
-								<div class="w3ls_vegetables">
-									<ul>
-										<li><a href="{{ url_for('products.frozen') }}">Frozen Snacks</a></li>
-										<li><a href="{{ url_for('products.frozen') }}">Frozen Nonveg</a></li>
-									</ul>
-								</div>
-							</div>
-						</li>
-						<li><a href="{{ url_for('products.bread') }}">Bread & Bakery</a></li>
+						<li><a href="{{ url_for('products.product_of_cate', category='Pet Food') }}">Pet Food</a></li>
+						<li><a href="{{ url_for('products.product_of_cate', category='frozen food') }}">Frozen Foods</a></li>
+						<li><a href="{{ url_for('products.product_of_cate', category='bread') }}">Bread & Bakery</a></li>
 					</ul>
 				 </div><!-- /.navbar-collapse -->
 			</nav>
@@ -119,7 +110,8 @@
 
     <!-- Bootstrap Core JavaScript -->
 <script src="{{ url_for('static', filename = 'js/bootstrap.min.js') }}" ></script>
-
+<script src="{{ url_for('static', filename='admin/js/jquery.validate.min.js') }}"></script>
+<script src="{{ url_for('static', filename='admin/js/validator.js') }}"></script>
 <script>
     $(document).ready(function(){
         $(".dropdown").hover(
@@ -150,29 +142,8 @@
 
 			});
 </script>
-<!-- //here ends scrolling icon -->
-<script type='text/javascript' src="{{ url_for('static', filename = 'js/minicart.js') }}"></script>
-
-<script>
-    paypal.minicart.render();
-
-    paypal.minicart.cart.on('checkout', function (evt) {
-        var items = this.items(),
-            len = items.length,
-            total = 0,
-            i;
-
-        // Count the number of each item in the cart
-        for (i = 0; i < len; i++) {
-            total += items[i].get('quantity');
-        }
-
-        if (total < 3) {
-            alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');
-            evt.preventDefault();
-        }
-    });
-
-</script>
+{% block end_scripts %}
+    {# scripts #}
+{% endblock end_scripts %}
 </body>
 </html>

@@ -1,0 +1,52 @@
+{% extends "admin_base.html" %}
+{% set page = 'Edit Order' %}
+{% set status = {'0': 'DatHang', '1': 'HuyDonHang', '2': 'DaGiaoHang', '3':'DaNhanHang', '4':'KhongGuiDuoc', '5': 'DoiTraHang'} %}
+
+{% block content %}
+{% if error %}
+    <div class="alert alert-block alert-warning">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="fa fa-times"></i>
+        </button>
+        <strong>Warning!</strong> {{ error }}
+    </div>
+{% endif %}
+<div class="container">
+    <div class="card card-register mx-auto mt-5">
+      <div class="card-header">{{ page }}</div>
+      <div class="card-body">
+          <h3>Order detail</h3>
+          <div class="order-detail">
+              <div class="row">
+                  <div class="col-md-6"><strong>Product</strong></div>
+                  <div class="col-md-6"><strong>Quantity</strong></div>
+                  {% for ord in order.order_details %}
+                    <div class="col-md-6"><a href="{{url_for('admin.action_product', id=ord.product.id, action='edit')}}">{{ord.product.name}}</a></div>
+                    <div class="col-md-6">{{ord.quantity}}</div>
+                  {% endfor %}
+              </div>
+          </div>
+        <form action="" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="id">Order ID</label>
+                <input class="form-control" id="id" readonly type="text" name="name" value="{{ order.id }}">
+              </div>
+              <div class="col-md-6">
+                  <label for="status">Order Status</label>
+                  <select name="status" id="status" class="form-control">
+                      {% for k,v in status.items() %}
+                      <option value={{k}} {% if order.status == k %} selected {% endif %}>{{v}}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Invoice</title>
+    <link href="{{ url_for('static', filename = 'css/bootstrap.css') }}" rel='stylesheet' type='text/css' />
+    <style type="text/css">
+    .invoice-title h2, .invoice-title h3 {
+		display: inline-block;
+	}
+
+	.table > tbody > tr > .no-line {
+		border-top: none;
+	}
+
+	.table > thead > tr > .no-line {
+		border-bottom: none;
+	}
+
+	.table > tbody > tr > .thick-line {
+		border-top: 2px solid;
+	}
+	.pull-right{
+	    margin-top: 20px;
+	}
+	.pull-right a, .pull-right span{
+	    padding: 10px;
+        color: #fff;
+        background: #ccc;
+        cursor: pointer
+	}
+    </style>
+</head>
+<body>
+	<div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="invoice-title">
+                    <h2>Invoice</h2>
+                    <div class="pull-right">
+                        <a href="{{url_for('products.products')}}">Continue shopping</a>
+                        <span>Print Invoice</span>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <address>
+                        <strong>Shipping from:</strong><br>
+                            Grocery Srore<br>
+                            Hà Nội, TT Trâu Quỳ, Gia Lâm<br>
+                            HVNN Việt Nam<br>
+                            Phone: 01682617464
+                        </address>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <address>
+                        <strong>Shipped To:</strong><br>
+                            {{ current_user.user_detail[0].fullname }}<br>
+                            {{ current_user.user_detail[0].city }}, {{ current_user.user_detail[0].ward }},
+                            {{ current_user.user_detail[0].district }}<br>
+                            {{ current_user.user_detail[0].address }}<br>
+                            Phone: {{ current_user.user_detail[0].phone }}
+                        </address>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <address>
+                            <strong>Payment Method:</strong><br>
+                            <i>Cash on delivery</i><br>
+                        </address>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <address>
+                            <strong>Order Date:</strong><br>
+                            {{ order_date }}<br><br>
+                        </address>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Order summary</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <td><strong>Item</strong></td>
+                                        <td class="text-center"><strong>Price</strong></td>
+                                        <td class="text-center"><strong>Quantity</strong></td>
+                                        <td class="text-right"><strong>Totals</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                                    {% for item in order_details %}
+                                    <tr>
+                                        <td>{{ item.product.name }}</td>
+                                        <td class="text-center">${{ item.price }}</td>
+                                        <td class="text-center">{{ item.quantity }}</td>
+                                        <td class="text-right">${{ item.price*item.quantity }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td class="thick-line"></td>
+                                        <td class="thick-line"></td>
+                                        <td class="thick-line text-center"><strong>Subtotal</strong></td>
+                                        <td class="thick-line text-right">${{ calculate_total_payment(order_details) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"></td>
+                                        <td class="no-line text-center"><strong>Shipping</strong></td>
+                                        <td class="no-line text-right">$2</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-line"></td>
+                                        <td class="no-line"></td>
+                                        <td class="no-line text-center"><strong>Total</strong></td>
+                                        <td class="no-line text-right">${{ calculate_total_payment(order_details) + 2 }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,46 +1,49 @@
 from app.model.product import Product
+from app.model.category import Category
+import uuid
+import sqlalchemy as sa
 
 class ProductService():
     def __init__(self, db):
         self.db = db
 
-    def create_product(self, name, info, so_luong, gia_ban, slug, category_id, category, sale=None):
+    def all(self):
+        return Product.query.all()
+
+    def create_product(self, name, info, quantity, price, category_id, sale=None):
+        category = Category.query.filter_by(id=category_id).first()
         product = Product()
         product.name = name
         product.info = info
-        product.so_luong = so_luong
-        product.gia_ban = gia_ban
+        product.quantity = quantity
+        product.price = price
         product.sale = sale
-        product.slug = slug
+        product.slug = str(uuid.uuid4())
         product.category_id = category_id
         product.category = category
-
-        status = ''
         try:
-            self.db.add(product)
-            self.db.commit('Add new product')
+            self.db.session.add(product)
+            self.db.session.commit()
+            return product
         except Exception as e:
-            status = "Add product error"
+            self.db.session.rollback()
+            return None
 
-        if status != '':
-            return status
-        return product
-
-    def change_product(self, product_id, name, info, so_luong, gia_ban, slug, category_id, category, sale=None):
+    def change_product(self, product_id, name, info, quantity, price, category_id, sale=None):
         product = Product.query.filter_by(id=product_id).first()
         if product:
+            category = Category.query.filter_by(id=category_id).first()
             product.name = name
             product.info = info
-            product.so_luong = so_luong
-            product.gia_ban = gia_ban
+            product.quantity = quantity
+            product.price = price
             product.sale = sale
-            product.slug = slug
             product.category_id = category_id
             product.category = category
-            self.db.commit(f'update product {product.name}')
+            self.db.session.commit()
             return product
         else:
-            return "Error ,no product"
+            return None
 
     def add_product_sale(self, product_id, sale):
         product = Product.query.filter_by(id=product_id).first()
@@ -67,3 +70,34 @@ class ProductService():
             return product
         else:
             return None
+
+    def delete(self, id):
+        product = Product.query.filter_by(id=id).first()
+        if product:
+            self.db.session.delete(product)
+            self.db.session.commit()
+            return product
+        return None
+
+    def get_product_sale(self):
+        product = Product.query.filter(Product.sale > 0).order_by(Product.sale.desc())
+        return product
+
+    def get_product_older(self):
+        products = Product.query.filter(Product.quantity < 10).order_by(Product.date_created.desc()).all()
+        return products
+
+    def search(self, text):
+        products = (Product.query.filter(Product.name.like("%" + text + "%"))).order_by(Product.sale.desc()).all()
+
+        if products != []:
+            return products
+        else:
+            products = (Product.query.filter(sa.or_(*[Product.name.like("%" + value + "%") for value in text.split(' ')])))\
+                .order_by(Product.sale.desc()).all()
+            return products
+
+    # def search(self, text):
+    #     products = Product.query.whoosh_search(" OR ".join([value for value in text.split(' ')]))\
+    #         .all()
+    #     return products

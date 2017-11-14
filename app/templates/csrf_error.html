@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+{% block head_meta %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Gretong Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+    Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+{% endblock %}
+
+<title>{% block title %}Demo{% endblock title %}</title>
+
+{% block shared_styles %}
+<link href="{{ url_for('static', filename = 'css/bootstrap.css') }}" rel='stylesheet' type='text/css' />
+<!-- jQuery (necessary JavaScript plugins) -->
+<script type='text/javascript' src="{{ url_for('static', filename = 'js/jquery-1.11.1.min.js') }}"></script>
+<script type='text/javascript' src="{{ url_for('static', filename = 'js/move-top.js') }}"></script>
+<script type='text/javascript' src="{{ url_for('static', filename = 'js/easing.js') }}"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+
+<!-- Custom Theme files -->
+<link href="{{ url_for('static', filename = 'css/style.css') }}" rel='stylesheet' type='text/css' />
+<link href="{{ url_for('static', filename = 'css/font-awesome.css') }}" rel='stylesheet' type='text/css' />
+
+<link href='//fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+
+<!--flexslider-->
+<link href="{{ url_for('static', filename = 'css/flexslider.css') }}" rel='stylesheet' type='text/css' />
+<script type='text/javascript' src="{{ url_for('static', filename = 'js/jquery.flexslider.js') }}"></script>
+
+{% endblock %}
+
+{% block styles %}
+    {# styles #}
+{% endblock styles %}
+
+{% block scripts %}
+    {# scripts #}
+{% endblock scripts %}
+
+</head>
+<body>
+<div class="text-center">
+  <p>{{reason}}</p>
+  <a href="{{ url_for('web.homepage') }}">Go Home</a>
+</div>
+</body>
+</html>
