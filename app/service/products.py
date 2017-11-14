@@ -96,8 +96,3 @@ class ProductService():
             products = (Product.query.filter(sa.or_(*[Product.name.like("%" + value + "%") for value in text.split(' ')])))\
                 .order_by(Product.sale.desc()).all()
             return products
-
-    # def search(self, text):
-    #     products = Product.query.whoosh_search(" OR ".join([value for value in text.split(' ')]))\
-    #         .all()
-    #     return products
