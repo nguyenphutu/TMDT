@@ -45,4 +45,5 @@ MAIL_DEFAULT_SENDER = 'GroceryStore <nguyentudb1995@gmail.com>'
 
 #Wkhtmltopdf
 WKHTMLTOPDF_BIN_PATH = 'F:\\Progrram Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
-PDF_DIR_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'pdf')
+# PDF_DIR_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app/static', 'pdf')
+PDF_DIR_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app\\static', 'pdf')

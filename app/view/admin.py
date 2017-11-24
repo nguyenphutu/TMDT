@@ -358,3 +358,10 @@ def action_orders(id, action):
             abort(404)
 
     abort(404)
+
+@admin.route('/statistic', methods=['GET'])
+@login_required
+@manage_required
+def statistic():
+    order_service = OrderService(db)
+    return render_template("statistic.html")

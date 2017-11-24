@@ -16,6 +16,16 @@
         </div>
     {% endif %}
     {% endwith %}
+    {% with success = get_flashed_messages(category_filter=["warring"]) %}
+    {% if success %}
+        <div class="alert alert-block alert-success">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="fa fa-times"></i>
+            </button>
+            <strong>Warring!</strong> {{success[0]}}
+        </div>
+    {% endif %}
+    {% endwith %}
     <div class="privacy about">
 			<h3>Chec<span>kout</span></h3>
 

@@ -138,7 +138,8 @@ class OrderTempService():
 
     def update(self, order_temp_id, quantity):
         order_temp = OrderTemp.query.filter_by(id=order_temp_id).first()
-        if order_temp:
+
+        if order_temp and int(quantity) <= order_temp.product.quantity:
             order_temp.quantity = quantity
             self.db.session.commit()
             return order_temp

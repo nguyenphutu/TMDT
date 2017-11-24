@@ -59,7 +59,10 @@ def save_change(id):
         quality = request.form['quality']
         if current_user.is_authenticated:
             order = order_temp_service.update(id, quantity=quality)
-            flash(u'update product successfully', 'success')
+            if order:
+                flash(u'update product successfully', 'success')
+            else:
+                flash(u'update product error', 'warring')
         elif id in session['orders_temps']:
             session['orders_temps'][id] = quality
             flash(u'update product successfully', 'success')

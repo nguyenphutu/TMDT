@@ -28,6 +28,7 @@ class ReportService():
 
         # html = render_template(template, **context)
         html = render_template(template)
+        print(app.config['PDF_DIR_PATH'])
         output_path = os.path.join(app.config['PDF_DIR_PATH'], output)
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         import pdb;pdb.set_trace()

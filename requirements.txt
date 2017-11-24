@@ -12,6 +12,7 @@ Flask-SQLAlchemy==2.3.0
 Flask-WhooshAlchemy==0.56
 Flask-WkHTMLtoPDF==0.1.0
 Flask-WTF==0.14.2
+gunicorn==19.7.1
 html5lib==1.0b10
 httplib2==0.10.3
 itsdangerous==0.24

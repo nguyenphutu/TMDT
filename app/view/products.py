@@ -7,6 +7,7 @@ from app.service.orders import OrderTempService, OrderDetailService, OrderServic
 from app.service.user import UserDetailService
 from app.form import CheckoutForm
 from app.utils import send_mail
+from app.service.report import ReportService
 
 product = Blueprint('products', __name__, url_prefix='/products')
 order_temp_service = OrderTempService(db)
@@ -108,15 +109,12 @@ def payment():
 
 @product.route('/dowload_order_detail')
 def dowload_pdf():
-    import pdfkit
-    path_wkthmltopdf = r'F:\Progrram Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
-    config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
-    path = url_for('static', filename='pdf')+'/aaa.pdf'
-    print(path)
-    pdf = pdfkit.from_string(render_template("test.html"), configuration=config, output_path=path)
+    report_svc = ReportService()
+    pdf = report_svc.to_pdf()
+
     response = make_response(pdf)
     response.headers['Content-Type'] = "application/pdf"
-    response.headers['Content-Disposition'] = "attachment; filename='test.pdf"
+    response.headers['Content-Disposition'] = "attachment; filename='report.pdf"
     return response
 
 def render_order_from_session(sess_order):
