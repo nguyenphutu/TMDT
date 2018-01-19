@@ -7,7 +7,7 @@ from app.service.orders import OrderTempService, OrderDetailService, OrderServic
 from app.service.user import UserDetailService
 from app.form import CheckoutForm
 from app.utils import send_mail
-from app.service.report import ReportService
+# from app.service.report import ReportService
 
 product = Blueprint('products', __name__, url_prefix='/products')
 order_temp_service = OrderTempService(db)
@@ -107,15 +107,15 @@ def checkout():
 def payment():
     return render_template("payment.html")
 
-@product.route('/dowload_order_detail')
-def dowload_pdf():
-    report_svc = ReportService()
-    pdf = report_svc.to_pdf()
-
-    response = make_response(pdf)
-    response.headers['Content-Type'] = "application/pdf"
-    response.headers['Content-Disposition'] = "attachment; filename='report.pdf"
-    return response
+# @product.route('/dowload_order_detail')
+# def dowload_pdf():
+#     report_svc = ReportService()
+#     pdf = report_svc.to_pdf()
+#
+#     response = make_response(pdf)
+#     response.headers['Content-Type'] = "application/pdf"
+#     response.headers['Content-Disposition'] = "attachment; filename='report.pdf"
+#     return response
 
 def render_order_from_session(sess_order):
     order_temps = []
@@ -126,4 +126,3 @@ def render_order_from_session(sess_order):
         order['price'] = product.price - round((product.price*product.sale)/100, 2)
         order_temps.append(order)
     return order_temps
-

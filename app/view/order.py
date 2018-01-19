@@ -2,14 +2,14 @@ from flask import Flask, session, render_template, Blueprint, abort, request, ma
 from app import db
 from app.service.orders import OrderService, OrderDetailService, OrderTempService
 from app.service.products import ProductService
-from app.service.report import ReportService
+# from app.service.report import ReportService
 from flask_login import current_user
 # order_service = OrderService(db)
 # order_detail_service = OrderDetailService(db)
 order_temp_service = OrderTempService(db)
 order_service = OrderService(db)
 product_service = ProductService(db)
-report_service = ReportService()
+# report_service = ReportService()
 
 order = Blueprint('order', __name__, url_prefix='/orders')
 
